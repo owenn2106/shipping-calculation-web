@@ -28,15 +28,15 @@ const InputSupplier = () => {
             </p>
           </div>
           <div>
-            <div className={style.input__wrapper}>
+            <div className="input__wrapper">
               <p>ID:</p>
               <Input placeholder="Supplier ID..." />
             </div>
-            <div className={style.input__wrapper}>
+            <div className="input__wrapper">
               <p>Nama:</p>
               <Input placeholder="Nama Supplier..." />
             </div>
-            <div className={style.input__wrapper}>
+            <div className="input__wrapper">
               <p>Lokasi Supplier:</p>
               <Input placeholder="Lokasi Supplier..." />
             </div>

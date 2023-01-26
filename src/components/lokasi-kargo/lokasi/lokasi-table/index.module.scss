@@ -1,0 +1,7 @@
+.modal__wrapper {
+  padding: 0.5em;
+
+  & > * {
+    margin-bottom: 1em;
+  }
+}

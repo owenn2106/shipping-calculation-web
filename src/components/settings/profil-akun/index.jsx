@@ -20,19 +20,19 @@ const ProfilAkun = () => {
           </p>
         </div>
         <div>
-          <div className={style.input__wrapper}>
+          <div className="input__wrapper">
             <p>Username</p>
             <Input placeholder="Username..." size="large" />
           </div>
-          <div className={style.input__wrapper}>
+          <div className="input__wrapper">
             <p>Email</p>
             <Input placeholder="Email..." size="large" />
           </div>
-          <div className={style.input__wrapper}>
+          <div className="input__wrapper">
             <p>Nama</p>
             <Input placeholder="Nama..." size="large" />
           </div>
-          <div className={style.input__wrapper}>
+          <div className="input__wrapper">
             <p>Jabatan</p>
             <Input placeholder="Jabatan..." size="large" />
           </div>
@@ -45,11 +45,11 @@ const ProfilAkun = () => {
           </Button>
         </div>
         <div>
-          <div className={style.input__wrapper}>
+          <div className="input__wrapper">
             <p>Password</p>
             <Input placeholder="Password..." size="large" />
           </div>
-          <div className={style.input__wrapper}>
+          <div className="input__wrapper">
             <p>Ketik Ulang Password</p>
             <Input placeholder="Ketik Ulang Password..." size="large" />
           </div>

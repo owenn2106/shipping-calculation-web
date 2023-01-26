@@ -1,15 +1,25 @@
-import { Card } from "antd";
+import { Card, Skeleton } from "antd";
+import CardTitle from "./card-title";
+import LokasiTable from "./lokasi-table";
 
-const Lokasi = () => {
+const Lokasi = ({ loading, data }) => {
   return (
     <Card
-      title={<h3 style={{ padding: "16px 0" }}>Kelola Lokasi</h3>}
+      title={<CardTitle />}
       bordered={false}
       style={{
         width: "100%",
         minHeight: "60vh",
       }}
-    ></Card>
+    >
+      {!loading ? (
+        <LokasiTable
+          originData={data.map((datum, idx) => ({ ...datum, key: idx }))}
+        />
+      ) : (
+        <Skeleton />
+      )}
+    </Card>
   );
 };
 
