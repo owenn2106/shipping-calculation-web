@@ -8,8 +8,8 @@ import _ from "lodash";
 const CardTitle = () => {
   const dispatch = useAppDispatch();
   const [isModalOpen, setModalOpen] = useState(false);
-  const [lokasi, loadingUpdate] = useAppSelector((state) => [
-    state.lokasiKargo.lokasi,
+  const [pelayaran, loadingUpdate] = useAppSelector((state) => [
+    state.lokasiKargo.pelayaran,
     state.lokasiKargo.loadingUpdate,
   ]);
 
@@ -18,63 +18,63 @@ const CardTitle = () => {
     name: "",
   };
 
-  const [newLokasi, setNewLokasi] = useState(initialState);
+  const [newPelayaran, setNewPelayaran] = useState(initialState);
 
   const handleOk = () => {
-    const newData = [...lokasi, newLokasi];
+    const newData = [...pelayaran, newPelayaran];
 
     dispatch({
-      type: actions.UPDATE_LOKASI,
+      type: actions.UPDATE_PELAYARAN,
       payload: {
-        data: { lokasi: newData.map(({ key, ...keepAttrs }) => keepAttrs) },
+        data: { pelayaran: newData.map(({ key, ...keepAttrs }) => keepAttrs) },
       },
     });
 
-    setNewLokasi(initialState);
+    setNewPelayaran(initialState);
     setModalOpen(false);
   };
 
   const handleCancel = () => {
     setModalOpen(false);
-    setNewLokasi(initialState);
+    setNewPelayaran(initialState);
   };
   return (
     <>
       <Modal
-        title="Input Lokasi"
+        title="Input Kapal"
         open={isModalOpen}
         onCancel={handleCancel}
         onOk={handleOk}
         okButtonProps={{
-          disabled: _.isEqual(newLokasi, initialState),
+          disabled: _.isEqual(newPelayaran, initialState),
           loading: loadingUpdate,
         }}
       >
         <div className="input__wrapper">
-          <p>ID Lokasi:</p>
+          <p>ID Kapal:</p>
           <Input
-            placeholder="ID Lokasi..."
-            value={newLokasi.id}
+            placeholder="ID Kapal..."
+            value={newPelayaran.id}
             onChange={(e) =>
-              setNewLokasi({ ...newLokasi, id: e.currentTarget.value })
+              setNewPelayaran({ ...newPelayaran, id: e.currentTarget.value })
             }
           />
         </div>
         <div className="input__wrapper">
-          <p>Nama Lokasi:</p>
+          <p>Nama Kapal:</p>
           <Input
-            placeholder="Nama Lokasi..."
-            value={newLokasi.name}
+            placeholder="Nama Kapal..."
+            value={newPelayaran.name}
             onChange={(e) =>
-              setNewLokasi({ ...newLokasi, name: e.currentTarget.value })
+              setNewPelayaran({ ...newPelayaran, name: e.currentTarget.value })
             }
           />
         </div>
       </Modal>
       <div className={style.card__title__content}>
-        <h3 style={{ padding: "16px 0" }}>Kelola Lokasi</h3>
+        <h3 style={{ padding: "16px 0" }}>Kelola Pelayaran</h3>
         <Button type="primary" onClick={() => setModalOpen(true)}>
-          Input Lokasi
+          Input Kapal
         </Button>
       </div>
     </>

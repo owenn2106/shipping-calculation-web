@@ -1,15 +1,11 @@
 import { useState } from "react";
-import { Table, Typography, Form, Button } from "antd";
+import { Table, Typography, Form } from "antd";
 import EditableCell from "./editable-cell";
-import _ from "lodash";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { useAppDispatch } from "redux/hooks";
 import actions from "redux/lokasi-kargo/actions";
 
-const LokasiTable = ({ originData }) => {
+const EkspedisiTable = ({ originData }) => {
   const dispatch = useAppDispatch();
-  const [loadingUpdate] = useAppSelector((state) => [
-    state.lokasiKargo.loadingUpdate,
-  ]);
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState("");
@@ -26,6 +22,18 @@ const LokasiTable = ({ originData }) => {
       dataIndex: "name",
       key: "name",
       editable: true,
+    },
+    {
+      title: "Kota Keberangkatan",
+      dataIndex: "from",
+      key: "from",
+      //   editable: true,
+    },
+    {
+      title: "Kota Tujuan",
+      dataIndex: "to",
+      key: "to",
+      //   editable: true,
     },
     {
       title: "",
@@ -75,6 +83,11 @@ const LokasiTable = ({ originData }) => {
       const index = newData.findIndex((item) => key === item.key);
       if (index > -1) {
         const item = newData[index];
+        console.log(row);
+        handleSaveChanges({
+          ...item,
+          ...row,
+        });
         newData.splice(index, 1, {
           ...item,
           ...row,
@@ -107,29 +120,17 @@ const LokasiTable = ({ originData }) => {
     };
   });
 
-  const handleApplyChanges = () => {
-    const newData = data.map(({ key, ...keepAttrs }) => keepAttrs);
+  const handleSaveChanges = (newData) => {
     dispatch({
-      type: actions.UPDATE_LOKASI,
+      type: actions.UPDATE_EKSPEDISI,
       payload: {
-        data: {
-          lokasi: newData,
-        },
+        data: newData,
       },
     });
   };
 
   return (
     <Form form={form} component={false}>
-      {!_.isEqual(originData, data) && (
-        <Button
-          loading={loadingUpdate}
-          onClick={handleApplyChanges}
-          style={{ width: "100%", marginBottom: "1em" }}
-        >
-          Apply Changes
-        </Button>
-      )}
       <Table
         components={{
           body: {
@@ -149,4 +150,4 @@ const LokasiTable = ({ originData }) => {
   );
 };
 
-export default LokasiTable;
+export default EkspedisiTable;

@@ -5,7 +5,7 @@ import _ from "lodash";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import actions from "redux/lokasi-kargo/actions";
 
-const LokasiTable = ({ originData }) => {
+const PelayaranTable = ({ originData }) => {
   const dispatch = useAppDispatch();
   const [loadingUpdate] = useAppSelector((state) => [
     state.lokasiKargo.loadingUpdate,
@@ -16,13 +16,13 @@ const LokasiTable = ({ originData }) => {
 
   const columns = [
     {
-      title: "ID Lokasi",
+      title: "ID Kapal",
       dataIndex: "id",
       key: "id",
       editable: true,
     },
     {
-      title: "Nama Lokasi",
+      title: "Nama Kapal",
       dataIndex: "name",
       key: "name",
       editable: true,
@@ -110,10 +110,10 @@ const LokasiTable = ({ originData }) => {
   const handleApplyChanges = () => {
     const newData = data.map(({ key, ...keepAttrs }) => keepAttrs);
     dispatch({
-      type: actions.UPDATE_LOKASI,
+      type: actions.UPDATE_PELAYARAN,
       payload: {
         data: {
-          lokasi: newData,
+          pelayaran: newData,
         },
       },
     });
@@ -149,4 +149,4 @@ const LokasiTable = ({ originData }) => {
   );
 };
 
-export default LokasiTable;
+export default PelayaranTable;

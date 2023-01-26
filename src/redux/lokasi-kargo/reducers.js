@@ -3,8 +3,12 @@ import actions from "./actions";
 export const initialState = {
   loadingUpdate: false,
   loadingLokasi: false,
+  loadingPelayaran: false,
+  loadingEkspedisi: false,
   lokasi: [],
   kargo: [],
+  pelayaran: [],
+  ekspedisi: [],
   alert: null,
 };
 

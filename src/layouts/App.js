@@ -1,8 +1,8 @@
 import { Layout } from "antd";
+import "antd/dist/reset.css";
 import logo from "../images/logo.png";
 import AppContent from "./content";
 import AppAlert from "components/app-alert";
-
 import style from "./App.module.scss";
 import SideNav from "./side-nav";
 
@@ -14,7 +14,7 @@ const App = () => {
   // } = theme.useToken();
 
   return (
-    <>
+    <div className="App">
       <AppAlert />
       <Layout
         style={{
@@ -59,7 +59,7 @@ const App = () => {
           </Footer>
         </Layout>
       </Layout>
-    </>
+    </div>
   );
 };
 export default App;
