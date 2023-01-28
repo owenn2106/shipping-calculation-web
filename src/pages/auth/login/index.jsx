@@ -46,7 +46,7 @@ const LoginPage = () => {
         </div>
         <div className="input__wrapper">
           <p>Password:</p>
-          <Input
+          <Input.Password
             placeholder="Your password..."
             value={password}
             onChange={(e) => setPassword(e.currentTarget.value)}
