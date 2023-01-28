@@ -1,0 +1,21 @@
+.login__wrapper {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: black;
+}
+
+.login__content {
+  border: 1px solid black;
+  border-radius: 30px;
+  background-color: white;
+
+  padding: 4em 6em;
+  width: 400px;
+}
+
+.login__title {
+  text-align: center;
+}

@@ -5,6 +5,8 @@ import AppContent from "./content";
 import AppAlert from "components/app-alert";
 import style from "./App.module.scss";
 import SideNav from "./side-nav";
+import { Routes, Route } from "react-router-dom";
+import LoginPage from "pages/auth/login";
 
 const { Content, Footer, Sider } = Layout;
 
@@ -14,7 +16,13 @@ const App = () => {
   // } = theme.useToken();
 
   return (
-    <div className="App">
+    <div>
+      {/* <Routes>
+        <Route path="/login" element={<LoginPage />} exact />
+        <Route
+          path="/"
+          element={
+            <> */}
       <AppAlert />
       <Layout
         style={{
@@ -59,6 +67,11 @@ const App = () => {
           </Footer>
         </Layout>
       </Layout>
+      {/* </>
+          }
+          exact
+        />
+      </Routes> */}
     </div>
   );
 };
