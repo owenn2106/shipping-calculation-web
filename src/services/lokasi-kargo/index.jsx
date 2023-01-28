@@ -92,3 +92,39 @@ export async function updateEkspedisi(data) {
       return { data: null, error: err };
     });
 }
+
+export async function getKargo() {
+  const collRef = collection(db, "kargo");
+  let data = [];
+
+  return getDocs(collRef)
+    .then((result) => {
+      result.docs.forEach((doc) => {
+        data.push({ ...doc.data(), ref: doc.ref, id: doc.id });
+      });
+      return { data: data, error: null };
+    })
+    .catch((err) => {
+      return { data: null, error: err };
+    });
+}
+
+export async function addKargo(data) {
+  return setDoc(doc(db, "kargo", data.id), _.omit(data, "id"))
+    .then(() => {
+      return { data: true, error: null };
+    })
+    .catch((err) => {
+      return { data: null, error: err };
+    });
+}
+
+export async function updateKargo(data) {
+  return updateDoc(data.ref, _.omit(data, ["id", "ref", "key"]))
+    .then(() => {
+      return { data: true, error: null };
+    })
+    .catch((err) => {
+      return { data: null, error: err };
+    });
+}

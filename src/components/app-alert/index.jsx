@@ -3,9 +3,13 @@ import { message } from "antd";
 import { useAppSelector } from "redux/hooks";
 
 const AppAlert = () => {
-  const [lokasiKargoAlert] = useAppSelector((state) => [
-    state.lokasiKargo.alert,
-  ]);
+  const [lokasiKargoAlert, supplierAlert, produkAlert] = useAppSelector(
+    (state) => [
+      state.lokasiKargo.alert,
+      state.supplier.alert,
+      state.produk.alert,
+    ]
+  );
 
   useEffect(() => {
     if (lokasiKargoAlert) {
@@ -16,6 +20,27 @@ const AppAlert = () => {
       }
     }
   }, [lokasiKargoAlert]);
+
+  useEffect(() => {
+    if (supplierAlert) {
+      if (supplierAlert.type === "success") {
+        message.success(supplierAlert.message);
+      } else {
+        message.error(supplierAlert.message);
+      }
+    }
+  }, [supplierAlert]);
+
+  useEffect(() => {
+    if (produkAlert) {
+      if (produkAlert.type === "success") {
+        message.success(produkAlert.message);
+      } else {
+        message.error(produkAlert.message);
+      }
+    }
+  }, [produkAlert]);
+
   return <></>;
 };
 

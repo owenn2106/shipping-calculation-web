@@ -1,39 +1,25 @@
 import { useState } from "react";
-import { Table, Typography, Form } from "antd";
+import { Table, Typography, Form, Button } from "antd";
 import EditableCell from "./editable-cell";
-import { useAppDispatch } from "redux/hooks";
-import actions from "redux/lokasi-kargo/actions";
+import _ from "lodash";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import actions from "redux/produk/actions";
 
-const EkspedisiTable = ({ originData }) => {
+const JenisProdukTable = ({ originData }) => {
   const dispatch = useAppDispatch();
+  const [loadingUpdate] = useAppSelector((state) => [
+    state.produk.loadingUpdate,
+  ]);
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState("");
 
   const columns = [
     {
-      title: "ID Lokasi",
-      dataIndex: "id",
-      key: "id",
-      editable: true,
-    },
-    {
-      title: "Nama Lokasi",
+      title: "Jenis Produk",
       dataIndex: "name",
       key: "name",
       editable: true,
-    },
-    {
-      title: "Kota Keberangkatan",
-      dataIndex: "from",
-      key: "from",
-      //   editable: true,
-    },
-    {
-      title: "Kota Tujuan",
-      dataIndex: "to",
-      key: "to",
-      //   editable: true,
     },
     {
       title: "",
@@ -83,10 +69,6 @@ const EkspedisiTable = ({ originData }) => {
       const index = newData.findIndex((item) => key === item.key);
       if (index > -1) {
         const item = newData[index];
-        handleSaveChanges({
-          ...item,
-          ...row,
-        });
         newData.splice(index, 1, {
           ...item,
           ...row,
@@ -119,17 +101,29 @@ const EkspedisiTable = ({ originData }) => {
     };
   });
 
-  const handleSaveChanges = (newData) => {
+  const handleApplyChanges = () => {
+    const newData = data.map(({ key, name }) => name);
     dispatch({
-      type: actions.UPDATE_EKSPEDISI,
+      type: actions.UPDATE_JENIS_PRODUK,
       payload: {
-        data: newData,
+        data: {
+          jenisProduk: newData,
+        },
       },
     });
   };
 
   return (
     <Form form={form} component={false}>
+      {!_.isEqual(originData, data) && (
+        <Button
+          loading={loadingUpdate}
+          onClick={handleApplyChanges}
+          style={{ width: "100%", marginBottom: "1em" }}
+        >
+          Apply Changes
+        </Button>
+      )}
       <Table
         components={{
           body: {
@@ -149,4 +143,4 @@ const EkspedisiTable = ({ originData }) => {
   );
 };
 
-export default EkspedisiTable;
+export default JenisProdukTable;

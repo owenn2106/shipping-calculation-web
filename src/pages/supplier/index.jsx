@@ -1,20 +1,31 @@
-// import { useEffect } from "react";
-import { Card } from "antd";
+import { useEffect } from "react";
+import { Card, Skeleton } from "antd";
 import CardTitle from "../../components/supplier/card-title";
-// import { collection, getDocs } from "firebase/firestore";
-// import { db } from "../../services/firebase";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import actions from "redux/supplier/actions";
+import SupplierTable from "components/supplier/supplier-table";
 
 const Supplier = () => {
-  // const getSuppliers = async () => {
-  //   const querySnapshot = await getDocs(collection(db, "suppliers"));
-  //   querySnapshot.forEach((doc) => {
-  //     console.log(`${doc.id} => ${doc.data()}`);
-  //   });
-  // };
+  const dispatch = useAppDispatch();
+  const [suppliers, loadingSupplier] = useAppSelector((state) => [
+    state.supplier.suppliers,
+    state.supplier.loadingSupplier,
+  ]);
 
-  // useEffect(() => {
-  //   getSuppliers();
-  // }, []);
+  useEffect(() => {
+    dispatch({
+      type: actions.GET_SUPPLIER,
+    });
+
+    return () => {
+      dispatch({
+        type: actions.SET_STATE,
+        payload: {
+          alert: null,
+        },
+      });
+    };
+  }, [dispatch]);
 
   return (
     <div>
@@ -26,7 +37,15 @@ const Supplier = () => {
           width: "100%",
           minHeight: "70vh",
         }}
-      ></Card>
+      >
+        {!loadingSupplier ? (
+          <SupplierTable
+            originData={suppliers.map((datum, idx) => ({ ...datum, key: idx }))}
+          />
+        ) : (
+          <Skeleton />
+        )}
+      </Card>
     </div>
   );
 };

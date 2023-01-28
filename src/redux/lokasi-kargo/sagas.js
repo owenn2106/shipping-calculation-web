@@ -2,10 +2,13 @@ import { call, put, all, takeLatest } from "redux-saga/effects";
 import actions from "./actions";
 import {
   addEkspedisi,
+  addKargo,
   getEkspedisi,
+  getKargo,
   getLokasi,
   getPelayaran,
   updateEkspedisi,
+  updateKargo,
   updateLokasi,
   updatePelayaran,
 } from "services/lokasi-kargo";
@@ -267,6 +270,119 @@ function* UPDATE_EKSPEDISI(input) {
   }
 }
 
+function* GET_KARGO() {
+  yield put({
+    type: actions.SET_STATE,
+    payload: {
+      loadingKargo: true,
+    },
+  });
+
+  const { data, error } = yield call(getKargo);
+
+  if (data) {
+    yield put({
+      type: actions.SET_STATE,
+      payload: {
+        loadingKargo: false,
+        kargo: data,
+      },
+    });
+  }
+
+  if (error) {
+    console.log(error);
+    yield put({
+      type: actions.SET_STATE,
+      payload: {
+        loadingKargo: false,
+      },
+    });
+  }
+}
+
+function* ADD_KARGO(input) {
+  yield put({
+    type: actions.SET_STATE,
+    payload: {
+      loadingUpdate: true,
+    },
+  });
+
+  const { data, error } = yield call(addKargo, input.payload.data);
+  if (data) {
+    yield put({
+      type: actions.GET_KARGO,
+    });
+
+    yield put({
+      type: actions.SET_STATE,
+      payload: {
+        loadingUpdate: false,
+        alert: {
+          type: "success",
+          message: "Kargo berhasil diinput.",
+        },
+      },
+    });
+  }
+
+  if (error) {
+    console.log(error);
+    yield put({
+      type: actions.SET_STATE,
+      payload: {
+        loadingUpdate: false,
+        alert: {
+          type: "error",
+          message: error.message || "Error occured.",
+        },
+      },
+    });
+  }
+}
+
+function* UPDATE_KARGO(input) {
+  yield put({
+    type: actions.SET_STATE,
+    payload: {
+      loadingUpdate: true,
+    },
+  });
+
+  const { data, error } = yield call(updateKargo, input.payload.data);
+  if (data) {
+    yield put({
+      type: actions.GET_KARGO,
+    });
+
+    yield put({
+      type: actions.SET_STATE,
+      payload: {
+        loadingUpdate: false,
+        alert: {
+          type: "success",
+          message: "Kargo berhasil diperbarui.",
+        },
+      },
+    });
+  }
+
+  if (error) {
+    console.log(error);
+    yield put({
+      type: actions.SET_STATE,
+      payload: {
+        loadingUpdate: false,
+        alert: {
+          type: "error",
+          message: error.message || "Error occured.",
+        },
+      },
+    });
+  }
+}
+
 export default function* rootSaga() {
   yield all([
     takeLatest(actions.GET_LOKASI, GET_LOKASI),
@@ -276,5 +392,8 @@ export default function* rootSaga() {
     takeLatest(actions.GET_EKSPEDISI, GET_EKSPEDISI),
     takeLatest(actions.ADD_EKSPEDISI, ADD_EKSPEDISI),
     takeLatest(actions.UPDATE_EKSPEDISI, UPDATE_EKSPEDISI),
+    takeLatest(actions.GET_KARGO, GET_KARGO),
+    takeLatest(actions.ADD_KARGO, ADD_KARGO),
+    takeLatest(actions.UPDATE_KARGO, UPDATE_KARGO),
   ]);
 }

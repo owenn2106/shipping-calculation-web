@@ -7,6 +7,9 @@ const actions = {
   GET_EKSPEDISI: "lokasi-kargo/GET_EKSPEDISI",
   ADD_EKSPEDISI: "lokasi-kargo/ADD_EKSPEDISI",
   UPDATE_EKSPEDISI: "lokasi-kargo/UPDATE_EKSPEDISI",
+  GET_KARGO: "lokasi-kargo/GET_KARGO",
+  ADD_KARGO: "lokasi-kargo/ADD_KARGO",
+  UPDATE_KARGO: "lokasi-kargo/UPDATE_KARGO",
 };
 
 export default actions;

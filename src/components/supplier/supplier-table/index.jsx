@@ -1,38 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Table, Typography, Form } from "antd";
 import EditableCell from "./editable-cell";
 import { useAppDispatch } from "redux/hooks";
-import actions from "redux/lokasi-kargo/actions";
+import actions from "redux/supplier/actions";
 
-const EkspedisiTable = ({ originData }) => {
+const SupplierTable = ({ originData }) => {
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState("");
 
+  useEffect(() => {
+    setData(originData);
+  }, [originData]);
+
   const columns = [
     {
-      title: "ID Lokasi",
+      title: "ID Supplier",
       dataIndex: "id",
       key: "id",
       editable: true,
     },
     {
-      title: "Nama Lokasi",
+      title: "Nama Supplier",
       dataIndex: "name",
       key: "name",
       editable: true,
     },
     {
-      title: "Kota Keberangkatan",
-      dataIndex: "from",
-      key: "from",
-      //   editable: true,
-    },
-    {
-      title: "Kota Tujuan",
-      dataIndex: "to",
-      key: "to",
+      title: "Lokasi",
+      dataIndex: "location",
+      key: "location",
       //   editable: true,
     },
     {
@@ -121,7 +119,7 @@ const EkspedisiTable = ({ originData }) => {
 
   const handleSaveChanges = (newData) => {
     dispatch({
-      type: actions.UPDATE_EKSPEDISI,
+      type: actions.UPDATE_SUPPLIER,
       payload: {
         data: newData,
       },
@@ -149,4 +147,4 @@ const EkspedisiTable = ({ originData }) => {
   );
 };
 
-export default EkspedisiTable;
+export default SupplierTable;

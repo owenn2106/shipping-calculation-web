@@ -8,7 +8,6 @@ const CardTitle = () => {
       <div style={{ width: 500 }}>
         <Input
           placeholder="Cari Supplier dengan Nama, ID, atau Lokasi"
-          size="large"
           style={{ width: "100%" }}
         />
       </div>

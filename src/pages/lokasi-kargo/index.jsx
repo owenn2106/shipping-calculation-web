@@ -18,6 +18,8 @@ const LokasiKargo = () => {
     pelayaran,
     loadingEkspedisi,
     ekspedisi,
+    loadingKargo,
+    kargo,
   ] = useAppSelector((state) => [
     state.lokasiKargo.loadingLokasi,
     state.lokasiKargo.lokasi,
@@ -25,6 +27,8 @@ const LokasiKargo = () => {
     state.lokasiKargo.pelayaran,
     state.lokasiKargo.loadingEkspedisi,
     state.lokasiKargo.ekspedisi,
+    state.lokasiKargo.loadingKargo,
+    state.lokasiKargo.kargo,
   ]);
 
   useEffect(() => {
@@ -36,6 +40,9 @@ const LokasiKargo = () => {
     });
     dispatch({
       type: actions.GET_EKSPEDISI,
+    });
+    dispatch({
+      type: actions.GET_KARGO,
     });
 
     return () => {
@@ -55,7 +62,7 @@ const LokasiKargo = () => {
         <Lokasi loading={loadingLokasi} data={lokasi} />
         <Ekspedisi loading={loadingEkspedisi} data={ekspedisi ?? []} />
         <Pelayaran loading={loadingPelayaran} data={pelayaran} />
-        <Kargo />
+        <Kargo loading={loadingKargo} data={kargo} />
       </div>
     </div>
   );

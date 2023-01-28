@@ -2,19 +2,15 @@ import actions from "./actions";
 
 export const initialState = {
   loadingUpdate: false,
-  loadingLokasi: false,
-  loadingKargo: false,
-  loadingPelayaran: false,
-  loadingEkspedisi: false,
-  lokasi: [],
-  kargo: [],
-  pelayaran: [],
-  ekspedisi: [],
+  loadingProduk: false,
+  loadingJenisProduk: false,
+  produk: [],
+  jenisProduk: [],
   alert: null,
 };
 
 // eslint-disable-next-line default-param-last
-export default function lokasiKargoReducer(state = initialState, action) {
+export default function produkReducer(state = initialState, action) {
   switch (action.type) {
     case actions.SET_STATE:
       return { ...state, ...action.payload };

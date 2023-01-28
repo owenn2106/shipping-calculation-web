@@ -1,15 +1,43 @@
-import { Card } from "antd";
+import { useEffect } from "react";
+import { Card, Skeleton } from "antd";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import CardTitle from "./card-title";
+import JenisProdukTable from "./jenis-produk-table";
+import actions from "redux/produk/actions";
 
 const KelolaJenisProduk = () => {
+  const dispatch = useAppDispatch();
+  const [loadingJenisProduk, jenisProduk] = useAppSelector((state) => [
+    state.produk.loadingJenisProduk,
+    state.produk.jenisProduk,
+  ]);
+
+  useEffect(() => {
+    dispatch({
+      type: actions.GET_JENIS_PRODUK,
+    });
+  }, [dispatch]);
+
   return (
     <Card
-      title={<h3 style={{ padding: "16px 0" }}>Kelola Jenis Produk</h3>}
+      title={<CardTitle jenisProduk={jenisProduk} />}
       bordered={false}
       style={{
         width: "100%",
         minHeight: "60vh",
       }}
-    ></Card>
+    >
+      {!loadingJenisProduk ? (
+        <JenisProdukTable
+          originData={jenisProduk.map((datum, idx) => ({
+            name: datum,
+            key: idx,
+          }))}
+        />
+      ) : (
+        <Skeleton />
+      )}
+    </Card>
   );
 };
 

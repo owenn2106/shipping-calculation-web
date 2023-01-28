@@ -1,15 +1,25 @@
-import { Card } from "antd";
+import { Card, Skeleton } from "antd";
+import CardTitle from "./card-title";
+import KargoTable from "./kargo-table";
 
-const Kargo = () => {
+const Kargo = ({ loading, data }) => {
   return (
     <Card
-      title={<h3 style={{ padding: "16px 0" }}>Kelola Kargo</h3>}
+      title={<CardTitle />}
       bordered={false}
       style={{
         width: "100%",
         minHeight: "60vh",
       }}
-    ></Card>
+    >
+      {!loading ? (
+        <KargoTable
+          originData={data.map((datum, idx) => ({ ...datum, key: idx }))}
+        />
+      ) : (
+        <Skeleton />
+      )}
+    </Card>
   );
 };
 

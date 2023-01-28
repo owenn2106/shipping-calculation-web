@@ -4,7 +4,7 @@ import EditableCell from "./editable-cell";
 import { useAppDispatch } from "redux/hooks";
 import actions from "redux/lokasi-kargo/actions";
 
-const EkspedisiTable = ({ originData }) => {
+const KargoTable = ({ originData }) => {
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
@@ -12,15 +12,15 @@ const EkspedisiTable = ({ originData }) => {
 
   const columns = [
     {
-      title: "ID Lokasi",
+      title: "ID Kargo",
       dataIndex: "id",
       key: "id",
       editable: true,
     },
     {
-      title: "Nama Lokasi",
-      dataIndex: "name",
-      key: "name",
+      title: "Nama Kontainer",
+      dataIndex: "kontainer",
+      key: "kontainer",
       editable: true,
     },
     {
@@ -33,6 +33,18 @@ const EkspedisiTable = ({ originData }) => {
       title: "Kota Tujuan",
       dataIndex: "to",
       key: "to",
+      //   editable: true,
+    },
+    {
+      title: "Nama Ekspedisi",
+      dataIndex: "ekspedisi",
+      key: "ekspedisi",
+      //   editable: true,
+    },
+    {
+      title: "Harga Ongkir",
+      dataIndex: "cost",
+      key: "cost",
       //   editable: true,
     },
     {
@@ -121,7 +133,7 @@ const EkspedisiTable = ({ originData }) => {
 
   const handleSaveChanges = (newData) => {
     dispatch({
-      type: actions.UPDATE_EKSPEDISI,
+      type: actions.UPDATE_KARGO,
       payload: {
         data: newData,
       },
@@ -149,4 +161,4 @@ const EkspedisiTable = ({ originData }) => {
   );
 };
 
-export default EkspedisiTable;
+export default KargoTable;

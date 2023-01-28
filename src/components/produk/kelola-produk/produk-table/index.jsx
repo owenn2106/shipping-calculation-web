@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Table, Typography, Form } from "antd";
 import EditableCell from "./editable-cell";
 import { useAppDispatch } from "redux/hooks";
-import actions from "redux/lokasi-kargo/actions";
+import actions from "redux/produk/actions";
 
-const EkspedisiTable = ({ originData }) => {
+const ProdukTable = ({ originData }) => {
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
@@ -12,27 +12,33 @@ const EkspedisiTable = ({ originData }) => {
 
   const columns = [
     {
-      title: "ID Lokasi",
+      title: "ID Produk",
       dataIndex: "id",
       key: "id",
       editable: true,
     },
     {
-      title: "Nama Lokasi",
+      title: "Nama Produk",
       dataIndex: "name",
       key: "name",
       editable: true,
     },
     {
-      title: "Kota Keberangkatan",
-      dataIndex: "from",
-      key: "from",
+      title: "Jenis Produk",
+      dataIndex: "jenis",
+      key: "jenis",
       //   editable: true,
     },
     {
-      title: "Kota Tujuan",
-      dataIndex: "to",
-      key: "to",
+      title: "Unit Satuan",
+      dataIndex: "unit",
+      key: "unit",
+      //   editable: true,
+    },
+    {
+      title: "Supplier",
+      dataIndex: "supplierId",
+      key: "supplierId",
       //   editable: true,
     },
     {
@@ -121,7 +127,7 @@ const EkspedisiTable = ({ originData }) => {
 
   const handleSaveChanges = (newData) => {
     dispatch({
-      type: actions.UPDATE_EKSPEDISI,
+      type: actions.UPDATE_PRODUK,
       payload: {
         data: newData,
       },
@@ -149,4 +155,4 @@ const EkspedisiTable = ({ originData }) => {
   );
 };
 
-export default EkspedisiTable;
+export default ProdukTable;
