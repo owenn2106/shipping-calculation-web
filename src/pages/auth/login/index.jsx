@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 import actions from "redux/auth/actions";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import logo from "images/logo.png";
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
@@ -35,7 +36,9 @@ const LoginPage = () => {
   return (
     <div className={style.login__wrapper}>
       <div className={style.login__content}>
-        <h3 className={style.login__title}>Shipping Calculation</h3>
+        <div className={style.image__wrapper}>
+          <img src={logo} alt="logo" />
+        </div>
         <div className="input__wrapper">
           <p>Email:</p>
           <Input
