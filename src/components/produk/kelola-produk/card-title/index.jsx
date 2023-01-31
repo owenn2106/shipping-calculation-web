@@ -22,7 +22,9 @@ const CardTitle = () => {
     name: "",
     jenis: "",
     unit: "",
+    kubikasi: "",
     supplierId: "",
+    keterangan: "",
   };
 
   const [newProduk, setNewProduk] = useState(initialState);
@@ -136,6 +138,26 @@ const CardTitle = () => {
           />
         </div>
         <div className="input__wrapper">
+          <p>Kubikasi:</p>
+          <Select
+            value={newProduk.kubikasi}
+            options={[
+              {
+                label: "Tonase",
+                value: "tonase",
+              },
+              {
+                label: "Volume",
+                value: "volume",
+              },
+            ]}
+            onChange={(value) =>
+              setNewProduk({ ...newProduk, kubikasi: value })
+            }
+            style={{ width: 200 }}
+          />
+        </div>
+        <div className="input__wrapper">
           <p>Supplier:</p>
           <Select
             value={newProduk.supplierId}
@@ -144,6 +166,16 @@ const CardTitle = () => {
               setNewProduk({ ...newProduk, supplierId: value })
             }
             style={{ width: 200 }}
+          />
+        </div>
+        <div className="input__wrapper">
+          <p>Keterangan:</p>
+          <Input
+            placeholder="Keterangan Produk..."
+            value={newProduk.keterangan}
+            onChange={(e) =>
+              setNewProduk({ ...newProduk, keterangan: e.currentTarget.value })
+            }
           />
         </div>
       </Modal>

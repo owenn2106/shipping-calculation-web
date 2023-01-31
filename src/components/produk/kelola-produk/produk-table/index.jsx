@@ -10,6 +10,19 @@ const ProdukTable = ({ originData }) => {
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState("");
 
+  const supplierFilterOptions = data
+    .map((datum) => {
+      return {
+        text: datum.supplierId,
+        value: datum.supplierId,
+      };
+    })
+    .filter(
+      (v, i, a) =>
+        a.findIndex((v2) => ["text", "value"].every((k) => v2[k] === v[k])) ===
+        i
+    );
+
   const columns = [
     {
       title: "ID Produk",
@@ -36,10 +49,25 @@ const ProdukTable = ({ originData }) => {
       //   editable: true,
     },
     {
+      title: "Kubikasi",
+      dataIndex: "kubikasi",
+      key: "kubikasi",
+      //   editable: true,
+    },
+    {
       title: "Supplier",
       dataIndex: "supplierId",
       key: "supplierId",
       //   editable: true,
+      filters: supplierFilterOptions,
+      filterSearch: true,
+      onFilter: (value, record) => record.supplierId.startsWith(value),
+    },
+    {
+      title: "Keterangan",
+      dataIndex: "keterangan",
+      key: "keterangan",
+      editable: true,
     },
     {
       title: "",
