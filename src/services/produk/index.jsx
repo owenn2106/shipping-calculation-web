@@ -5,7 +5,7 @@ import {
   getDoc,
   updateDoc,
   getDocs,
-  setDoc,
+  addDoc,
 } from "firebase/firestore";
 import _ from "lodash";
 
@@ -26,7 +26,7 @@ export async function getProduk() {
 }
 
 export async function addProduk(data) {
-  return setDoc(doc(db, "produk", data.id), _.omit(data, "id"))
+  return addDoc(collection(db, "produk"), data)
     .then(() => {
       return { data: true, error: null };
     })
@@ -36,7 +36,7 @@ export async function addProduk(data) {
 }
 
 export async function updateProduk(data) {
-  return updateDoc(data.ref, _.omit(data, ["id", "ref", "key"]))
+  return updateDoc(data.ref, _.omit(data, ["ref", "key"]))
     .then(() => {
       return { data: true, error: null };
     })

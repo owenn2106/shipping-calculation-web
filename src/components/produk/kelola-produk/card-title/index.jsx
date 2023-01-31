@@ -18,7 +18,6 @@ const CardTitle = () => {
   ]);
 
   const initialState = {
-    id: "",
     name: "",
     jenis: "",
     unit: "",
@@ -100,16 +99,6 @@ const CardTitle = () => {
         }}
       >
         <div className="input__wrapper">
-          <p>ID Produk (digunakan untuk Barcode):</p>
-          <Input
-            placeholder="ID Produk..."
-            value={newProduk.id}
-            onChange={(e) =>
-              setNewProduk({ ...newProduk, id: e.currentTarget.value })
-            }
-          />
-        </div>
-        <div className="input__wrapper">
           <p>Nama Produk (CC):</p>
           <Input
             placeholder="Nama Produk..."
@@ -142,6 +131,11 @@ const CardTitle = () => {
           <Select
             value={newProduk.kubikasi}
             options={[
+              {
+                label: "Pilih Kubikasi Produk",
+                value: "",
+                disabled: true,
+              },
               {
                 label: "Tonase",
                 value: "tonase",
