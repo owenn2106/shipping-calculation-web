@@ -1,4 +1,8 @@
-import { Form, Input, InputNumber } from "antd";
+import { useEffect } from "react";
+import { Form, Input, InputNumber, Select } from "antd";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { ITEM_UNITS } from "utils/constant";
+import supplierActions from "redux/supplier/actions";
 
 const EditableCell = ({
   editing,
@@ -10,7 +14,82 @@ const EditableCell = ({
   children,
   ...restProps
 }) => {
-  const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
+  const dispatch = useAppDispatch();
+  const [jenisProduk, suppliers] = useAppSelector((state) => [
+    state.produk.jenisProduk,
+    state.supplier.suppliers,
+  ]);
+
+  useEffect(() => {
+    dispatch({
+      type: supplierActions.GET_SUPPLIER,
+    });
+  }, [dispatch]);
+
+  const jenisProdukOptions = [
+    {
+      label: "Pilih Jenis Produk",
+      value: "",
+      disabled: true,
+    },
+    ...jenisProduk.map((jenis) => ({
+      value: jenis,
+      label: jenis,
+    })),
+  ];
+
+  const unitsOptions = [
+    {
+      label: "Pilih Unit Produk",
+      value: "",
+      disabled: true,
+    },
+    ...ITEM_UNITS.map((unit) => ({
+      value: unit,
+      label: unit,
+    })),
+  ];
+
+  const supplierOptions = suppliers.map((supplier) => ({
+    value: supplier.id,
+    label: supplier.name,
+  }));
+
+  const inputNode =
+    dataIndex === "jenis" ? (
+      <Select defaultValue={record.jenis} options={jenisProdukOptions} />
+    ) : dataIndex === "unit" ? (
+      <Select defaultValue={record.unit} options={unitsOptions} />
+    ) : dataIndex === "kubikasi" ? (
+      <Select
+        defaultValue={record.kubikasi}
+        options={[
+          {
+            label: "Pilih Kubikasi Produk",
+            value: "",
+            disabled: true,
+          },
+          {
+            label: "Tonase",
+            value: "tonase",
+          },
+          {
+            label: "Volume",
+            value: "volume",
+          },
+        ]}
+      />
+    ) : dataIndex === "supplierId" ? (
+      <Select
+        mode="multiple"
+        value={record.supplierId}
+        options={supplierOptions}
+      />
+    ) : inputType === "number" ? (
+      <InputNumber />
+    ) : (
+      <Input />
+    );
   return (
     <td {...restProps}>
       {editing ? (
@@ -19,12 +98,12 @@ const EditableCell = ({
           style={{
             margin: 0,
           }}
-          rules={[
-            {
-              required: true,
-              message: `Please Input ${title}!`,
-            },
-          ]}
+          // rules={[
+          //   {
+          //     required: true,
+          //     message: `Please Input ${title}!`,
+          //   },
+          // ]}
         >
           {inputNode}
         </Form.Item>

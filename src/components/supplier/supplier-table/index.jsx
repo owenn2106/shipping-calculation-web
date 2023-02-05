@@ -31,7 +31,7 @@ const SupplierTable = ({ originData }) => {
       title: "Lokasi",
       dataIndex: "location",
       key: "location",
-      //   editable: true,
+      editable: true,
     },
     {
       title: "",

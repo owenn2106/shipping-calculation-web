@@ -6,6 +6,7 @@ import {
   updateDoc,
   getDocs,
   addDoc,
+  writeBatch,
 } from "firebase/firestore";
 import _ from "lodash";
 
@@ -27,6 +28,27 @@ export async function getProduk() {
 
 export async function addProduk(data) {
   return addDoc(collection(db, "produk"), data)
+    .then(() => {
+      return { data: true, error: null };
+    })
+    .catch((err) => {
+      return { data: null, error: err };
+    });
+}
+
+export async function batchAddProduk(data) {
+  const batches = [];
+  data.forEach((datum, i) => {
+    if (i % 500 === 0) {
+      batches.push(writeBatch(db));
+    }
+
+    const productRef = doc(collection(db, "produk"));
+    const batch = batches[batches.length - 1];
+    batch.set(productRef, datum);
+  });
+
+  return await Promise.all(batches.map((batch) => batch.commit()))
     .then(() => {
       return { data: true, error: null };
     })
