@@ -36,6 +36,12 @@ const EkspedisiTable = ({ originData }) => {
       editable: true,
     },
     {
+      title: "Harga Ongkir (Rupiah)",
+      dataIndex: "cost",
+      key: "cost",
+      editable: true,
+    },
+    {
       title: "",
       dataIndex: "operation",
       render: (_, record) => {

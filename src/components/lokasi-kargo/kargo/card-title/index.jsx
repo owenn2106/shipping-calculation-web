@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Modal, Input, Select, InputNumber } from "antd";
+import { Button, Modal, Input, Select } from "antd";
 import style from "./index.module.scss";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 import actions from "redux/lokasi-kargo/actions";
@@ -23,7 +23,6 @@ const CardTitle = () => {
     from: "",
     to: "",
     ekspedisi: "",
-    cost: 0,
   };
 
   const kapalOptions = [
@@ -34,8 +33,16 @@ const CardTitle = () => {
     })),
   ];
 
-  const cityOptions = [
+  const keberangkatanOptions = [
     { label: "Pilih Kota Keberangkatan", value: "", disabled: true },
+    ...lokasi.map((obj) => ({
+      label: obj.name,
+      value: obj.id,
+    })),
+  ];
+
+  const tujuanOptions = [
+    { label: "Pilih Kota Tujuan", value: "", disabled: true },
     ...lokasi.map((obj) => ({
       label: obj.name,
       value: obj.id,
@@ -103,7 +110,7 @@ const CardTitle = () => {
           <p>Kota Keberangkatan:</p>
           <Select
             value={newKargo.from}
-            options={cityOptions}
+            options={keberangkatanOptions}
             onChange={(value) => setNewKargo({ ...newKargo, from: value })}
           />
         </div>
@@ -111,7 +118,7 @@ const CardTitle = () => {
           <p>Kota Tujuan:</p>
           <Select
             value={newKargo.to}
-            options={cityOptions}
+            options={tujuanOptions}
             onChange={(value) => setNewKargo({ ...newKargo, to: value })}
           />
         </div>
@@ -121,18 +128,6 @@ const CardTitle = () => {
             value={newKargo.ekspedisi}
             options={ekspedisiOptions}
             onChange={(value) => setNewKargo({ ...newKargo, ekspedisi: value })}
-          />
-        </div>
-        <div className="input__wrapper">
-          <p>Harga Ongkir (Rupiah):</p>
-          <InputNumber
-            value={newKargo.cost}
-            formatter={(value) =>
-              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            }
-            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-            onChange={(value) => setNewKargo({ ...newKargo, cost: value })}
-            style={{ width: 200 }}
           />
         </div>
       </Modal>
