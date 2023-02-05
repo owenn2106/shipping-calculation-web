@@ -48,7 +48,7 @@ const App = () => {
                       }}
                     >
                       <img src={logo} alt="logo" />
-                      <p>Shipping Calculation</p>
+                      <p style={{ marginBottom: 0 }}>Shipping Calculation</p>
                     </div>
                     <SideNav />
                   </Sider>

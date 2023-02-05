@@ -54,13 +54,19 @@ const ProdukTable = ({ originData }) => {
       editable: true,
     },
     {
+      title: "Berat / Volume",
+      dataIndex: "volumeBerat",
+      key: "volumeBerat",
+      editable: true,
+    },
+    {
       title: "Supplier",
       dataIndex: "supplierId",
       key: "supplierId",
       editable: true,
       filters: supplierFilterOptions,
       filterSearch: true,
-      onFilter: (value, record) => record.supplierId.startsWith(value),
+      onFilter: (value, record) => record.supplierId?.includes(value),
     },
     {
       title: "Keterangan",

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Modal, Input, Select } from "antd";
+import { Button, Modal, Input, Select, InputNumber } from "antd";
 import style from "./index.module.scss";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 import produkActions from "redux/produk/actions";
@@ -23,6 +23,7 @@ const CardTitle = () => {
     jenis: "",
     unit: "",
     kubikasi: "",
+    volumeBerat: 0,
     supplierId: [],
     keterangan: "",
   };
@@ -145,6 +146,35 @@ const CardTitle = () => {
             style={{ width: 200 }}
           />
         </div>
+        {newProduk.kubikasi === "volume" ? (
+          <div className="input__wrapper">
+            <p>Volume:</p>
+            <InputNumber
+              step="0.000001"
+              stringMode
+              precision={7}
+              style={{ width: 200 }}
+              placeholder="Support 6 Desimal Belakang Koma..."
+              onChange={(value) =>
+                setNewProduk({ ...newProduk, volumeBerat: value })
+              }
+            />
+          </div>
+        ) : newProduk.kubikasi === "tonase" ? (
+          <div className="input__wrapper">
+            <p>Berat:</p>
+            <InputNumber
+              step="0.000001"
+              stringMode
+              precision={7}
+              style={{ width: 200 }}
+              placeholder="Support 6 Desimal Belakang Koma..."
+              onChange={(value) =>
+                setNewProduk({ ...newProduk, volumeBerat: value })
+              }
+            />
+          </div>
+        ) : null}
         <div className="input__wrapper">
           <p>Supplier:</p>
           <Select
