@@ -23,8 +23,12 @@ const EditableCell = ({
       <Select value={record.from} options={lokasiOptions} />
     ) : dataIndex === "to" ? (
       <Select value={record.to} options={lokasiOptions} />
-    ) : inputType === "number" ? (
-      <InputNumber />
+    ) : dataIndex === "cost" ? (
+      <InputNumber
+        defaultValue={record.cost}
+        formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+        parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+      />
     ) : (
       <Input />
     );
