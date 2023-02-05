@@ -42,12 +42,6 @@ const KargoTable = ({ originData }) => {
       //   editable: true,
     },
     {
-      title: "Harga Ongkir",
-      dataIndex: "cost",
-      key: "cost",
-      //   editable: true,
-    },
-    {
       title: "",
       dataIndex: "operation",
       render: (_, record) => {

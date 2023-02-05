@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Modal, Input, Select } from "antd";
+import { Button, Modal, Input, Select, InputNumber } from "antd";
 import style from "./index.module.scss";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 import actions from "redux/lokasi-kargo/actions";
@@ -18,6 +18,7 @@ const CardTitle = () => {
     name: "",
     from: "",
     to: "",
+    cost: 0,
   };
 
   const keberangkatanOptions = [
@@ -104,6 +105,20 @@ const CardTitle = () => {
             onChange={(value) =>
               setNewEkspedisi({ ...newEkspedisi, to: value })
             }
+          />
+        </div>
+        <div className="input__wrapper">
+          <p>Harga Ongkir (Rupiah):</p>
+          <InputNumber
+            value={newEkspedisi.cost}
+            formatter={(value) =>
+              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+            onChange={(value) =>
+              setNewEkspedisi({ ...newEkspedisi, cost: value })
+            }
+            style={{ width: 200 }}
           />
         </div>
       </Modal>
