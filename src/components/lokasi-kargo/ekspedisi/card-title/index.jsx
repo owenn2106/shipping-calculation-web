@@ -20,8 +20,16 @@ const CardTitle = () => {
     to: "",
   };
 
-  const cityOptions = [
+  const keberangkatanOptions = [
     { label: "Pilih Kota Keberangkatan", value: "", disabled: true },
+    ...lokasi.map((obj) => ({
+      label: obj.name,
+      value: obj.id,
+    })),
+  ];
+
+  const tujuanOptions = [
+    { label: "Pilih Kota Tujuan", value: "", disabled: true },
     ...lokasi.map((obj) => ({
       label: obj.name,
       value: obj.id,
@@ -82,7 +90,7 @@ const CardTitle = () => {
           <p>Kota Keberangkatan:</p>
           <Select
             value={newEkspedisi.from}
-            options={cityOptions}
+            options={keberangkatanOptions}
             onChange={(value) =>
               setNewEkspedisi({ ...newEkspedisi, from: value })
             }
@@ -92,7 +100,7 @@ const CardTitle = () => {
           <p>Kota Tujuan:</p>
           <Select
             value={newEkspedisi.to}
-            options={cityOptions}
+            options={tujuanOptions}
             onChange={(value) =>
               setNewEkspedisi({ ...newEkspedisi, to: value })
             }

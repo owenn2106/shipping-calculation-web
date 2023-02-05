@@ -7,6 +7,7 @@ import supplierActions from "redux/supplier/actions";
 import _ from "lodash";
 import { ITEM_UNITS } from "utils/constant";
 import { useEffect } from "react";
+import ImportExcelButton from "../import-excel-btn";
 
 const CardTitle = () => {
   const dispatch = useAppDispatch();
@@ -22,7 +23,7 @@ const CardTitle = () => {
     jenis: "",
     unit: "",
     kubikasi: "",
-    supplierId: "",
+    supplierId: [],
     keterangan: "",
   };
 
@@ -58,17 +59,10 @@ const CardTitle = () => {
     })),
   ];
 
-  const supplierOptions = [
-    {
-      label: "Pilih Supplier",
-      value: "",
-      disabled: true,
-    },
-    ...suppliers.map((supplier) => ({
-      value: supplier.id,
-      label: supplier.name,
-    })),
-  ];
+  const supplierOptions = suppliers.map((supplier) => ({
+    value: supplier.id,
+    label: supplier.name,
+  }));
 
   const handleOk = () => {
     dispatch({
@@ -154,6 +148,7 @@ const CardTitle = () => {
         <div className="input__wrapper">
           <p>Supplier:</p>
           <Select
+            mode="multiple"
             value={newProduk.supplierId}
             options={supplierOptions}
             onChange={(value) =>
@@ -175,9 +170,16 @@ const CardTitle = () => {
       </Modal>
       <div className={style.card__title__content}>
         <h3 style={{ padding: "16px 0" }}>Kelola Produk</h3>
-        <Button type="primary" onClick={() => setModalOpen(true)}>
-          Input Produk
-        </Button>
+        <div className={style.action__btn__wrapper}>
+          <ImportExcelButton />
+          <Button
+            type="primary"
+            onClick={() => setModalOpen(true)}
+            style={{ marginLeft: "20px" }}
+          >
+            Input Produk
+          </Button>
+        </div>
       </div>
     </>
   );

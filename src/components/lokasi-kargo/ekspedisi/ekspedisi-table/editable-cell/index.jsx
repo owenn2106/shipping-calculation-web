@@ -1,4 +1,5 @@
-import { Form, Input, InputNumber } from "antd";
+import { Form, Input, InputNumber, Select } from "antd";
+import { useAppSelector } from "redux/hooks";
 
 const EditableCell = ({
   editing,
@@ -10,7 +11,23 @@ const EditableCell = ({
   children,
   ...restProps
 }) => {
-  const inputNode = inputType === "number" ? <InputNumber /> : <Input />;
+  const [lokasi] = useAppSelector((state) => [state.lokasiKargo.lokasi]);
+
+  const lokasiOptions = lokasi.map((obj) => ({
+    label: obj.name,
+    value: obj.id,
+  }));
+
+  const inputNode =
+    dataIndex === "from" ? (
+      <Select value={record.from} options={lokasiOptions} />
+    ) : dataIndex === "to" ? (
+      <Select value={record.to} options={lokasiOptions} />
+    ) : inputType === "number" ? (
+      <InputNumber />
+    ) : (
+      <Input />
+    );
   return (
     <td {...restProps}>
       {editing ? (

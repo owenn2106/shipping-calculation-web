@@ -18,7 +18,7 @@ const EkspedisiTable = ({ originData }) => {
       editable: true,
     },
     {
-      title: "Nama Lokasi",
+      title: "Nama Ekspedisi",
       dataIndex: "name",
       key: "name",
       editable: true,
@@ -27,13 +27,13 @@ const EkspedisiTable = ({ originData }) => {
       title: "Kota Keberangkatan",
       dataIndex: "from",
       key: "from",
-      //   editable: true,
+      editable: true,
     },
     {
       title: "Kota Tujuan",
       dataIndex: "to",
       key: "to",
-      //   editable: true,
+      editable: true,
     },
     {
       title: "",

@@ -28,7 +28,6 @@ const ProdukTable = ({ originData }) => {
       title: "ID Produk",
       dataIndex: "id",
       key: "id",
-      editable: true,
     },
     {
       title: "Nama Produk",
@@ -40,25 +39,25 @@ const ProdukTable = ({ originData }) => {
       title: "Jenis Produk",
       dataIndex: "jenis",
       key: "jenis",
-      //   editable: true,
+      editable: true,
     },
     {
       title: "Unit Satuan",
       dataIndex: "unit",
       key: "unit",
-      //   editable: true,
+      editable: true,
     },
     {
       title: "Kubikasi",
       dataIndex: "kubikasi",
       key: "kubikasi",
-      //   editable: true,
+      editable: true,
     },
     {
       title: "Supplier",
       dataIndex: "supplierId",
       key: "supplierId",
-      //   editable: true,
+      editable: true,
       filters: supplierFilterOptions,
       filterSearch: true,
       onFilter: (value, record) => record.supplierId.startsWith(value),
@@ -98,6 +97,19 @@ const ProdukTable = ({ originData }) => {
     },
   ];
 
+  function formatUndefined(obj) {
+    for (var i in obj) {
+      if (i === "supplierId" && obj[i] === undefined) {
+        obj[i] = [];
+      }
+      if (obj[i] === undefined) {
+        obj[i] = "";
+      }
+    }
+
+    return obj;
+  }
+
   const isEditing = (record) => record.key === editingKey;
   const edit = (record) => {
     form.setFieldsValue({
@@ -119,7 +131,7 @@ const ProdukTable = ({ originData }) => {
         const item = newData[index];
         handleSaveChanges({
           ...item,
-          ...row,
+          ...formatUndefined(row),
         });
         newData.splice(index, 1, {
           ...item,
