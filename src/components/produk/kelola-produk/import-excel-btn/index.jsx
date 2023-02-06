@@ -21,9 +21,9 @@ const ImportExcelButton = () => {
 
         const editedData = rows.map(
           ({
-            "Kategori Barang": jenis,
-            "Nama Barang": name,
-            Satuan: unit,
+            "Jenis Produk": jenis,
+            "Nama Produk": name,
+            "Unit Satuan": unit,
           }) => ({ jenis, name, unit })
         );
 
