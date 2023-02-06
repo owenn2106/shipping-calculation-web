@@ -30,6 +30,12 @@ const ProdukTable = ({ originData }) => {
       key: "id",
     },
     {
+      title: "Merk Produk",
+      dataIndex: "merk",
+      key: "merk",
+      editable: true,
+    },
+    {
       title: "Nama Produk",
       dataIndex: "name",
       key: "name",

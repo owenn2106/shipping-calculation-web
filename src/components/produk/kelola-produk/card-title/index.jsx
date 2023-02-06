@@ -19,6 +19,7 @@ const CardTitle = () => {
   ]);
 
   const initialState = {
+    merk: "",
     name: "",
     jenis: "",
     unit: "",
@@ -93,6 +94,16 @@ const CardTitle = () => {
           loading: loadingUpdate,
         }}
       >
+        <div className="input__wrapper">
+          <p>Merk Produk:</p>
+          <Input
+            placeholder="Merk Produk..."
+            value={newProduk.merk}
+            onChange={(e) =>
+              setNewProduk({ ...newProduk, merk: e.currentTarget.value })
+            }
+          />
+        </div>
         <div className="input__wrapper">
           <p>Nama Produk (CC):</p>
           <Input
