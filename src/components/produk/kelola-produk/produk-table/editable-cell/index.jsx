@@ -85,8 +85,8 @@ const EditableCell = ({
         value={record.supplierId}
         options={supplierOptions}
       />
-    ) : inputType === "number" ? (
-      <InputNumber />
+    ) : dataIndex === "volumeBerat" ? (
+      <InputNumber step="0.000001" stringMode precision={7} />
     ) : (
       <Input />
     );
