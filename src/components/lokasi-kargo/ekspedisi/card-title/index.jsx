@@ -18,7 +18,14 @@ const CardTitle = () => {
     name: "",
     from: "",
     to: "",
-    cost: 0,
+    cost: {
+      value: 0,
+      date: null,
+    },
+    extraCost: {
+      value: 0,
+      date: null,
+    },
   };
 
   const keberangkatanOptions = [
@@ -40,6 +47,18 @@ const CardTitle = () => {
   const [newEkspedisi, setNewEkspedisi] = useState(initialState);
 
   const handleOk = () => {
+    setNewEkspedisi({
+      ...newEkspedisi,
+      cost: {
+        ...newEkspedisi.cost,
+        date: new Date(),
+      },
+      extraCost: {
+        ...newEkspedisi.extraCost,
+        date: new Date(),
+      },
+    });
+
     dispatch({
       type: actions.ADD_EKSPEDISI,
       payload: {
@@ -116,7 +135,33 @@ const CardTitle = () => {
             }
             parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
             onChange={(value) =>
-              setNewEkspedisi({ ...newEkspedisi, cost: value })
+              setNewEkspedisi({
+                ...newEkspedisi,
+                cost: {
+                  value: value,
+                  ...newEkspedisi.cost,
+                },
+              })
+            }
+            style={{ width: 200 }}
+          />
+        </div>
+        <div className="input__wrapper">
+          <p>Ongkir Lain-lain:</p>
+          <InputNumber
+            value={newEkspedisi.extraCost}
+            formatter={(value) =>
+              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+            onChange={(value) =>
+              setNewEkspedisi({
+                ...newEkspedisi,
+                extraCost: {
+                  value: value,
+                  ...newEkspedisi.extraCost,
+                },
+              })
             }
             style={{ width: 200 }}
           />

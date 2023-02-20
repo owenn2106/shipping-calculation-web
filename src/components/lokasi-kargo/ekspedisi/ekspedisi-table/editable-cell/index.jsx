@@ -29,6 +29,12 @@ const EditableCell = ({
         formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
         parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
       />
+    ) : dataIndex === "extraCost" ? (
+      <InputNumber
+        defaultValue={record.extraCost}
+        formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+        parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+      />
     ) : (
       <Input />
     );
