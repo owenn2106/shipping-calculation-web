@@ -29,9 +29,9 @@ const KelolaJenisProduk = () => {
     >
       {!loadingJenisProduk ? (
         <JenisProdukTable
-          originData={jenisProduk.map((datum, idx) => ({
-            name: datum,
-            key: idx,
+          originData={jenisProduk.map((datum) => ({
+            name: datum.name,
+            key: datum.id,
           }))}
         />
       ) : (

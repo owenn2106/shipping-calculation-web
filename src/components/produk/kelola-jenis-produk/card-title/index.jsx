@@ -4,6 +4,7 @@ import style from "./index.module.scss";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 import actions from "redux/produk/actions";
 import _ from "lodash";
+import ImportExcelButton from "../import-excel-btn";
 
 const CardTitle = ({ jenisProduk }) => {
   const dispatch = useAppDispatch();
@@ -15,7 +16,19 @@ const CardTitle = ({ jenisProduk }) => {
   const [newJenis, setNewJenis] = useState("");
 
   const handleOk = () => {
-    const newData = [...jenisProduk, newJenis];
+    const lastIdx = jenisProduk
+      .map((jenis) => jenis.id)
+      .sort(function (a, b) {
+        return b - a;
+      })[0];
+
+    const newData = [
+      ...jenisProduk,
+      {
+        id: lastIdx ? lastIdx + 1 : 1,
+        name: newJenis,
+      },
+    ];
 
     dispatch({
       type: actions.UPDATE_JENIS_PRODUK,
@@ -58,9 +71,16 @@ const CardTitle = ({ jenisProduk }) => {
       </Modal>
       <div className={style.card__title__content}>
         <h3 style={{ padding: "16px 0" }}>Kelola Jenis Produk</h3>
-        <Button type="primary" onClick={() => setModalOpen(true)}>
-          Input Jenis Produk
-        </Button>
+        <div className={style.action__btn__wrapper}>
+          <ImportExcelButton jenisProduk={jenisProduk} />
+          <Button
+            type="primary"
+            onClick={() => setModalOpen(true)}
+            style={{ marginLeft: "20px" }}
+          >
+            Input Jenis Produk
+          </Button>
+        </div>
       </div>
     </>
   );

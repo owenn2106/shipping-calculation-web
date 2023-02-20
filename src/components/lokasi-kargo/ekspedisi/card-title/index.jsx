@@ -129,7 +129,7 @@ const CardTitle = () => {
         <div className="input__wrapper">
           <p>Harga Ongkir (Rupiah):</p>
           <InputNumber
-            value={newEkspedisi.cost}
+            value={newEkspedisi.cost.value}
             formatter={(value) =>
               `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             }
@@ -149,7 +149,7 @@ const CardTitle = () => {
         <div className="input__wrapper">
           <p>Ongkir Lain-lain:</p>
           <InputNumber
-            value={newEkspedisi.extraCost}
+            value={newEkspedisi.extraCost.value}
             formatter={(value) =>
               `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             }
