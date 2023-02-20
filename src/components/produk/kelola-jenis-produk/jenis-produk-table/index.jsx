@@ -18,7 +18,7 @@ const JenisProdukTable = ({ originData }) => {
     {
       title: "Jenis Produk",
       dataIndex: "name",
-      key: "name",
+      key: "key",
       editable: true,
     },
     {
@@ -102,12 +102,11 @@ const JenisProdukTable = ({ originData }) => {
   });
 
   const handleApplyChanges = () => {
-    const newData = data.map(({ key, name }) => name);
     dispatch({
       type: actions.UPDATE_JENIS_PRODUK,
       payload: {
         data: {
-          jenisProduk: newData,
+          jenisProduk: data,
         },
       },
     });

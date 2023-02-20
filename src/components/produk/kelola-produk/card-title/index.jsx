@@ -44,8 +44,8 @@ const CardTitle = () => {
       disabled: true,
     },
     ...jenisProduk.map((jenis) => ({
-      value: jenis,
-      label: jenis,
+      value: jenis.name,
+      label: jenis.name,
     })),
   ];
 

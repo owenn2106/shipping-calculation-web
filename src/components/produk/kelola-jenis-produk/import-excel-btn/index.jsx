@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 import actions from "redux/produk/actions";
 import * as XLSX from "xlsx";
 
-const ImportExcelButton = () => {
+const ImportExcelButton = ({ jenisProduk }) => {
   const dispatch = useAppDispatch();
   const [loadingUpdate] = useAppSelector((state) => [
     state.produk.loadingUpdate,
@@ -15,44 +15,34 @@ const ImportExcelButton = () => {
     reader.onload = (event) => {
       const wb = XLSX.read(event.target.result);
       const sheets = wb.SheetNames;
-
       if (sheets.length) {
         const rows = XLSX.utils.sheet_to_json(wb.Sheets[sheets[0]]);
 
-        const editedData = rows.map(
-          ({
-            "Merk Produk": merk,
-            "Jenis Produk": jenis,
-            "Nama Produk": name,
-            "Unit Satuan": unit,
-          }) => ({ merk, jenis, name, unit })
-        );
+        const editedData = rows.map(({ "Jenis Produk": name }) => ({
+          name,
+        }));
 
-        editedData.forEach(function (obj) {
-          for (var i in obj) {
-            if (obj[i] === undefined) {
-              obj[i] = "";
-            }
-          }
-        });
+        const lastIdx = jenisProduk
+          .map((jenis) => jenis.id)
+          .sort(function (a, b) {
+            return b - a;
+          })[0];
 
-        if (editedData.length >= 500) {
-          while (editedData.length > 0) {
-            dispatch({
-              type: actions.BATCH_ADD_PRODUK,
-              payload: {
-                data: editedData.splice(0, 500),
-              },
-            });
-          }
-        } else {
-          dispatch({
-            type: actions.BATCH_ADD_PRODUK,
-            payload: {
-              data: editedData,
-            },
-          });
+        let counter = lastIdx ?? 0;
+
+        for (const datum of editedData) {
+          datum["id"] = counter + 1;
+          counter++;
         }
+
+        dispatch({
+          type: actions.UPDATE_JENIS_PRODUK,
+          payload: {
+            data: {
+              jenisProduk: [...jenisProduk, ...editedData],
+            },
+          },
+        });
       }
     };
     reader.readAsArrayBuffer(file);
