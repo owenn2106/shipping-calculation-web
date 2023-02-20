@@ -10,18 +10,18 @@ const ProdukTable = ({ originData }) => {
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState("");
 
-  const supplierFilterOptions = data
-    .map((datum) => {
-      return {
-        text: datum.supplierId,
-        value: datum.supplierId,
-      };
-    })
-    .filter(
-      (v, i, a) =>
-        a.findIndex((v2) => ["text", "value"].every((k) => v2[k] === v[k])) ===
-        i
-    );
+  // const supplierFilterOptions = data
+  //   .map((datum) => {
+  //     return {
+  //       text: datum.supplierId,
+  //       value: datum.supplierId,
+  //     };
+  //   })
+  //   .filter(
+  //     (v, i, a) =>
+  //       a.findIndex((v2) => ["text", "value"].every((k) => v2[k] === v[k])) ===
+  //       i
+  //   );
 
   const columns = [
     {
@@ -40,6 +40,7 @@ const ProdukTable = ({ originData }) => {
       dataIndex: "name",
       key: "name",
       editable: true,
+      width: 450,
     },
     {
       title: "Jenis Produk",
@@ -52,6 +53,7 @@ const ProdukTable = ({ originData }) => {
       dataIndex: "unit",
       key: "unit",
       editable: true,
+      width: 90,
     },
     {
       title: "Kubikasi",
@@ -70,9 +72,10 @@ const ProdukTable = ({ originData }) => {
       dataIndex: "supplierId",
       key: "supplierId",
       editable: true,
-      filters: supplierFilterOptions,
-      filterSearch: true,
-      onFilter: (value, record) => record.supplierId?.includes(value),
+      render: (_, record) => {
+        console.log(record.supplierId);
+        return record.supplierId && record.supplierId.join(", ");
+      },
     },
     {
       title: "Keterangan",
@@ -83,6 +86,8 @@ const ProdukTable = ({ originData }) => {
     {
       title: "",
       dataIndex: "operation",
+      fixed: "right",
+      width: 70,
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
@@ -202,6 +207,9 @@ const ProdukTable = ({ originData }) => {
           onChange: cancel,
         }}
         rowKey="key"
+        scroll={{
+          x: 1500,
+        }}
       />
     </Form>
   );

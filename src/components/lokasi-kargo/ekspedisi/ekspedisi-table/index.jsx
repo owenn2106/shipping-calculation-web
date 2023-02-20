@@ -42,6 +42,12 @@ const EkspedisiTable = ({ originData }) => {
       editable: true,
     },
     {
+      title: "Ongkir Lain-lain",
+      dataIndex: "extraCost",
+      key: "extraCost",
+      editable: true,
+    },
+    {
       title: "",
       dataIndex: "operation",
       render: (_, record) => {
