@@ -18,9 +18,18 @@ const ImportExcelButton = ({ jenisProduk }) => {
       if (sheets.length) {
         const rows = XLSX.utils.sheet_to_json(wb.Sheets[sheets[0]]);
 
-        const editedData = rows.map(({ "Jenis Produk": name }) => ({
-          name,
-        }));
+        const editedData = [
+          ...new Set(
+            rows.map(({ "Jenis Produk": name }) => ({
+              name,
+            }))
+          ),
+        ];
+
+        const names = editedData.map((o) => o.name);
+        const filteredData = editedData.filter(
+          ({ name }, index) => !names.includes(name, index + 1)
+        );
 
         const lastIdx = jenisProduk
           .map((jenis) => jenis.id)
@@ -30,7 +39,7 @@ const ImportExcelButton = ({ jenisProduk }) => {
 
         let counter = lastIdx ?? 0;
 
-        for (const datum of editedData) {
+        for (const datum of filteredData) {
           datum["id"] = counter + 1;
           counter++;
         }
@@ -39,7 +48,7 @@ const ImportExcelButton = ({ jenisProduk }) => {
           type: actions.UPDATE_JENIS_PRODUK,
           payload: {
             data: {
-              jenisProduk: [...jenisProduk, ...editedData],
+              jenisProduk: [...jenisProduk, ...filteredData],
             },
           },
         });

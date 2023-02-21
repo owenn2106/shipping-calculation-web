@@ -73,7 +73,6 @@ const ProdukTable = ({ originData }) => {
       key: "supplierId",
       editable: true,
       render: (_, record) => {
-        console.log(record.supplierId);
         return record.supplierId && record.supplierId.join(", ");
       },
     },

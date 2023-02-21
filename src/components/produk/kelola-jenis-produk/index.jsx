@@ -29,10 +29,14 @@ const KelolaJenisProduk = () => {
     >
       {!loadingJenisProduk ? (
         <JenisProdukTable
-          originData={jenisProduk.map((datum) => ({
-            name: datum.name,
-            key: datum.id,
-          }))}
+          originData={jenisProduk
+            .map((datum) => ({
+              name: datum.name,
+              key: datum.id,
+            }))
+            .sort((a, b) => {
+              return a.name.localeCompare(b.name);
+            })}
         />
       ) : (
         <Skeleton />

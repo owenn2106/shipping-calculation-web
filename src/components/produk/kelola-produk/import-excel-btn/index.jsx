@@ -6,9 +6,37 @@ import * as XLSX from "xlsx";
 
 const ImportExcelButton = () => {
   const dispatch = useAppDispatch();
-  const [loadingUpdate] = useAppSelector((state) => [
+  const [loadingUpdate, jenisProduk] = useAppSelector((state) => [
     state.produk.loadingUpdate,
+    state.produk.jenisProduk,
   ]);
+
+  const formatId = (newProduk, final) => {
+    let formatted = undefined;
+    const jenis = jenisProduk.find(
+      (jenis) =>
+        jenis.name.replaceAll(" ", "").toLowerCase() ===
+        newProduk.jenis.replaceAll(" ", "").toLowerCase()
+    );
+
+    const merkId = (
+      "XXX" + newProduk.merk.replaceAll(" ", "").slice(0, 4).toUpperCase()
+    ).slice(-4);
+
+    const jenisId = ("000" + jenis.id).slice(-4);
+
+    const duplicateLen = final.filter(
+      (el) => el.substring(0, 8) === jenisId + merkId
+    ).length;
+
+    if (duplicateLen === 0) {
+      formatted = jenisId + merkId + "0001";
+    } else {
+      formatted = jenisId + merkId + ("000" + (duplicateLen + 1)).slice(-4);
+    }
+
+    return formatted;
+  };
 
   const handleImport = (file) => {
     const reader = new FileReader();
@@ -28,7 +56,12 @@ const ImportExcelButton = () => {
           }) => ({ merk, jenis, name, unit })
         );
 
-        editedData.forEach(function (obj) {
+        const final = [];
+
+        editedData.forEach((obj) => {
+          obj.id = formatId(obj, final);
+          final.push(formatId(obj, final));
+
           for (var i in obj) {
             if (obj[i] === undefined) {
               obj[i] = "";
@@ -36,23 +69,12 @@ const ImportExcelButton = () => {
           }
         });
 
-        if (editedData.length >= 500) {
-          while (editedData.length > 0) {
-            dispatch({
-              type: actions.BATCH_ADD_PRODUK,
-              payload: {
-                data: editedData.splice(0, 500),
-              },
-            });
-          }
-        } else {
-          dispatch({
-            type: actions.BATCH_ADD_PRODUK,
-            payload: {
-              data: editedData,
-            },
-          });
-        }
+        dispatch({
+          type: actions.BATCH_ADD_PRODUK,
+          payload: {
+            data: editedData,
+          },
+        });
       }
     };
     reader.readAsArrayBuffer(file);
