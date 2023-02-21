@@ -12,11 +12,14 @@ import ImportExcelButton from "../import-excel-btn";
 const CardTitle = () => {
   const dispatch = useAppDispatch();
   const [isModalOpen, setModalOpen] = useState(false);
-  const [loadingUpdate, jenisProduk, suppliers] = useAppSelector((state) => [
-    state.produk.loadingUpdate,
-    state.produk.jenisProduk,
-    state.supplier.suppliers,
-  ]);
+  const [loadingUpdate, jenisProduk, suppliers, produk] = useAppSelector(
+    (state) => [
+      state.produk.loadingUpdate,
+      state.produk.jenisProduk,
+      state.supplier.suppliers,
+      state.produk.produk,
+    ]
+  );
 
   const initialState = {
     merk: "",
@@ -43,10 +46,12 @@ const CardTitle = () => {
       value: "",
       disabled: true,
     },
-    ...jenisProduk.map((jenis) => ({
-      value: jenis.name,
-      label: jenis.name,
-    })),
+    ...jenisProduk
+      .map((jenis) => ({
+        value: jenis.name,
+        label: jenis.name,
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label)),
   ];
 
   const unitsOptions = [
@@ -61,16 +66,39 @@ const CardTitle = () => {
     })),
   ];
 
-  const supplierOptions = suppliers.map((supplier) => ({
-    value: supplier.id,
-    label: supplier.name,
-  }));
+  const supplierOptions = suppliers
+    .map((supplier) => ({
+      value: supplier.id,
+      label: supplier.name,
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+
+  const formatId = () => {
+    let formatted = null;
+    const jenisId = (
+      "000" + jenisProduk.find((jenis) => jenis.name === newProduk.jenis).id
+    ).slice(-4);
+    const merkId = newProduk.merk.replaceAll(" ", "").slice(0, 4).toUpperCase();
+
+    const duplicateLen = produk.filter(
+      (obj) => obj.jenis === newProduk.jenis && obj.merk === newProduk.merk
+    ).length;
+
+    if (duplicateLen === 0) {
+      formatted = jenisId + merkId + "0001";
+    } else {
+      formatted = jenisId + merkId + ("000" + (duplicateLen + 1)).slice(-4);
+    }
+
+    return formatted;
+  };
 
   const handleOk = () => {
     dispatch({
       type: produkActions.ADD_PRODUK,
       payload: {
         data: newProduk,
+        id: formatId(),
       },
     });
 

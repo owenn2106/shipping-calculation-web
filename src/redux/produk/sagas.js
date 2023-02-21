@@ -48,7 +48,7 @@ function* ADD_PRODUK(input) {
     },
   });
 
-  const { data, error } = yield call(addProduk, input.payload.data);
+  const { data, error } = yield call(addProduk, input.payload);
   if (data) {
     yield put({
       type: actions.GET_PRODUK,

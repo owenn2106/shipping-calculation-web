@@ -20,7 +20,11 @@ const KelolaProduk = () => {
     >
       {!loadingProduk ? (
         <ProdukTable
-          originData={produk.map((datum, idx) => ({ ...datum, key: idx }))}
+          originData={produk
+            .map((datum, idx) => ({ ...datum, key: idx }))
+            .sort(function (a, b) {
+              return a.name.localeCompare(b.name);
+            })}
         />
       ) : (
         <Skeleton />
