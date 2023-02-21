@@ -60,18 +60,21 @@ const ProdukTable = ({ originData }) => {
       dataIndex: "kubikasi",
       key: "kubikasi",
       editable: true,
+      width: 150,
     },
     {
       title: "Berat / Volume",
       dataIndex: "volumeBerat",
       key: "volumeBerat",
       editable: true,
+      width: 150,
     },
     {
       title: "Supplier",
       dataIndex: "supplierId",
       key: "supplierId",
       editable: true,
+      width: 400,
       render: (_, record) => {
         return record.supplierId && record.supplierId.join(", ");
       },
@@ -207,7 +210,7 @@ const ProdukTable = ({ originData }) => {
         }}
         rowKey="key"
         scroll={{
-          x: 1500,
+          x: 2000,
         }}
       />
     </Form>
