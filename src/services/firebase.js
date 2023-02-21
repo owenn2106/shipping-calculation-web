@@ -35,7 +35,7 @@ const config = {
 };
 
 // Your web app's Firebase configuration
-const firebaseConfig = isLocalhost ? config.production : config.production;
+const firebaseConfig = isLocalhost ? config.development : config.production;
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
