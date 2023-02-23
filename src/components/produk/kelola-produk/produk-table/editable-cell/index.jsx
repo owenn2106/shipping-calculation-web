@@ -89,7 +89,7 @@ const EditableCell = ({
       <InputNumber
         step="0.000001"
         stringMode
-        precision={7}
+        precision={6}
         style={{ width: "100%" }}
       />
     ) : (
@@ -103,12 +103,6 @@ const EditableCell = ({
           style={{
             margin: 0,
           }}
-          // rules={[
-          //   {
-          //     required: true,
-          //     message: `Please Input ${title}!`,
-          //   },
-          // ]}
         >
           {inputNode}
         </Form.Item>
