@@ -10,18 +10,31 @@ const ProdukTable = ({ originData }) => {
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState("");
 
-  // const supplierFilterOptions = data
-  //   .map((datum) => {
-  //     return {
-  //       text: datum.supplierId,
-  //       value: datum.supplierId,
-  //     };
-  //   })
-  //   .filter(
-  //     (v, i, a) =>
-  //       a.findIndex((v2) => ["text", "value"].every((k) => v2[k] === v[k])) ===
-  //       i
-  //   );
+  const merkProdukFilters = data
+    .map((datum) => {
+      return {
+        text: datum.merk,
+        value: datum.merk,
+      };
+    })
+    .filter(
+      (v, i, a) =>
+        a.findIndex((v2) => ["text", "value"].every((k) => v2[k] === v[k])) ===
+        i
+    );
+
+  const namaProdukFilters = data
+    .map((datum) => {
+      return {
+        text: datum.name,
+        value: datum.name,
+      };
+    })
+    .filter(
+      (v, i, a) =>
+        a.findIndex((v2) => ["text", "value"].every((k) => v2[k] === v[k])) ===
+        i
+    );
 
   const columns = [
     {
@@ -34,6 +47,9 @@ const ProdukTable = ({ originData }) => {
       dataIndex: "merk",
       key: "merk",
       editable: true,
+      filters: merkProdukFilters,
+      filterSearch: true,
+      onFilter: (value, record) => record.merk.includes(value),
     },
     {
       title: "Nama Produk",
@@ -41,6 +57,9 @@ const ProdukTable = ({ originData }) => {
       key: "name",
       editable: true,
       width: 450,
+      filters: namaProdukFilters,
+      filterSearch: true,
+      onFilter: (value, record) => record.name.startsWith(value),
     },
     {
       title: "Jenis Produk",

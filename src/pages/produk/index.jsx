@@ -10,10 +10,14 @@ const Produk = () => {
 
   useEffect(() => {
     dispatch({
-      type: actions.GET_PRODUK,
+      type: actions.SUBSCRIBE_TO_PRODUK,
     });
 
     return () => {
+      dispatch({
+        type: actions.UNSUBSCRIBE_FROM_PRODUK,
+      });
+
       dispatch({
         type: actions.SET_STATE,
         payload: {

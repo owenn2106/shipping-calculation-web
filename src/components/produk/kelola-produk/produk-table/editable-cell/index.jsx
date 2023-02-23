@@ -86,7 +86,7 @@ const EditableCell = ({
         options={supplierOptions}
       />
     ) : dataIndex === "volumeBerat" ? (
-      <InputNumber step="0.000001" stringMode precision={7} />
+      <InputNumber step="0.000001" stringMode precision={7} width={"100%"} />
     ) : (
       <Input />
     );

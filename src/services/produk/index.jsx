@@ -4,26 +4,49 @@ import {
   doc,
   getDoc,
   updateDoc,
-  getDocs,
+  // getDocs,
   setDoc,
   writeBatch,
+  onSnapshot,
 } from "firebase/firestore";
+import { eventChannel } from "redux-saga";
 import _ from "lodash";
 
-export async function getProduk() {
-  const collRef = collection(db, "produk");
-  let data = [];
+// export async function getProduk() {
+//   const collRef = collection(db, "produk");
+//   let data = [];
 
-  return getDocs(collRef)
-    .then((result) => {
-      result.docs.forEach((doc) => {
-        data.push({ ...doc.data(), ref: doc.ref, id: doc.id });
+//   return getDocs(collRef)
+//     .then((result) => {
+//       result.docs.forEach((doc) => {
+//         data.push({ ...doc.data(), ref: doc.ref, id: doc.id });
+//       });
+//       return { data: data, error: null };
+//     })
+//     .catch((err) => {
+//       return { data: null, error: err };
+//     });
+// }
+
+export function setProdukListener() {
+  return eventChannel((emmiter) => {
+    const collRef = collection(db, "produk");
+    const unsub = onSnapshot(collRef, (snapshot) => {
+      const data = [];
+
+      snapshot.forEach((doc) => {
+        data.push({
+          ...doc.data(),
+          id: doc.id,
+          ref: doc.ref,
+        });
       });
-      return { data: data, error: null };
-    })
-    .catch((err) => {
-      return { data: null, error: err };
+
+      emmiter(data);
     });
+
+    return () => unsub();
+  });
 }
 
 export async function addProduk(data) {
