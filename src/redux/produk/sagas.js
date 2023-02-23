@@ -1,42 +1,60 @@
-import { call, put, all, takeLatest } from "redux-saga/effects";
+import {
+  all,
+  call,
+  cancelled,
+  fork,
+  put,
+  take,
+  takeLatest,
+} from "redux-saga/effects";
 import {
   addProduk,
   batchAddProduk,
   getJenisProduk,
-  getProduk,
+  setProdukListener,
   updateJenisProduk,
   updateProduk,
 } from "services/produk";
 import actions from "./actions";
 
-function* GET_PRODUK() {
+function* SUBSCRIBE_TO_PRODUK() {
   yield put({
     type: actions.SET_STATE,
     payload: {
       loadingProduk: true,
+      produk: [],
     },
   });
 
-  const { data, error } = yield call(getProduk);
+  const channel = yield call(setProdukListener);
 
-  if (data) {
-    yield put({
-      type: actions.SET_STATE,
-      payload: {
-        loadingProduk: false,
-        produk: data,
-      },
-    });
-  }
+  yield fork(function* () {
+    yield take(actions.UNSUBSCRIBE_FROM_PRODUK);
+    channel.close();
+  });
 
-  if (error) {
-    console.log(error);
-    yield put({
-      type: actions.SET_STATE,
-      payload: {
-        loadingProduk: false,
-      },
-    });
+  try {
+    while (true) {
+      const produk = yield take(channel);
+      yield put({
+        type: actions.SET_STATE,
+        payload: {
+          produk,
+          loadingProduk: false,
+        },
+      });
+    }
+  } finally {
+    const c = yield cancelled();
+    if (c) {
+      channel.close();
+      yield put({
+        type: actions.SET_STATE,
+        payload: {
+          loadingProduk: false,
+        },
+      });
+    }
   }
 }
 
@@ -50,10 +68,6 @@ function* ADD_PRODUK(input) {
 
   const { data, error } = yield call(addProduk, input.payload);
   if (data) {
-    yield put({
-      type: actions.GET_PRODUK,
-    });
-
     yield put({
       type: actions.SET_STATE,
       payload: {
@@ -92,10 +106,6 @@ function* BATCH_ADD_PRODUK(input) {
   const { data, error } = yield call(batchAddProduk, input.payload.data);
   if (data) {
     yield put({
-      type: actions.GET_PRODUK,
-    });
-
-    yield put({
       type: actions.SET_STATE,
       payload: {
         loadingUpdate: false,
@@ -132,10 +142,6 @@ function* UPDATE_PRODUK(input) {
 
   const { data, error } = yield call(updateProduk, input.payload.data);
   if (data) {
-    yield put({
-      type: actions.GET_PRODUK,
-    });
-
     yield put({
       type: actions.SET_STATE,
       payload: {
@@ -237,7 +243,7 @@ function* UPDATE_JENIS_PRODUK(input) {
 
 export default function* rootSaga() {
   yield all([
-    takeLatest(actions.GET_PRODUK, GET_PRODUK),
+    takeLatest(actions.SUBSCRIBE_TO_PRODUK, SUBSCRIBE_TO_PRODUK),
     takeLatest(actions.ADD_PRODUK, ADD_PRODUK),
     takeLatest(actions.BATCH_ADD_PRODUK, BATCH_ADD_PRODUK),
     takeLatest(actions.UPDATE_PRODUK, UPDATE_PRODUK),

@@ -1,27 +1,56 @@
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Table, Typography, Form } from "antd";
 import EditableCell from "./editable-cell";
-import { useAppDispatch } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 import actions from "redux/produk/actions";
+import supplierActions from "redux/supplier/actions";
 
 const ProdukTable = ({ originData }) => {
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState("");
+  const [suppliers] = useAppSelector((state) => [state.supplier.suppliers]);
 
-  // const supplierFilterOptions = data
-  //   .map((datum) => {
-  //     return {
-  //       text: datum.supplierId,
-  //       value: datum.supplierId,
-  //     };
-  //   })
-  //   .filter(
-  //     (v, i, a) =>
-  //       a.findIndex((v2) => ["text", "value"].every((k) => v2[k] === v[k])) ===
-  //       i
-  //   );
+  useEffect(() => {
+    dispatch({
+      type: supplierActions.GET_SUPPLIER,
+    });
+  }, [dispatch]);
+
+  const getSupplier = useCallback(
+    (supplierId) => {
+      const supplier = suppliers.find((x) => x.id === supplierId);
+      return supplier ? supplier.name : supplierId;
+    },
+    [suppliers]
+  );
+
+  const merkProdukFilters = data
+    .map((datum) => {
+      return {
+        text: datum.merk,
+        value: datum.merk,
+      };
+    })
+    .filter(
+      (v, i, a) =>
+        a.findIndex((v2) => ["text", "value"].every((k) => v2[k] === v[k])) ===
+        i
+    );
+
+  const namaProdukFilters = data
+    .map((datum) => {
+      return {
+        text: datum.name,
+        value: datum.name,
+      };
+    })
+    .filter(
+      (v, i, a) =>
+        a.findIndex((v2) => ["text", "value"].every((k) => v2[k] === v[k])) ===
+        i
+    );
 
   const columns = [
     {
@@ -34,6 +63,9 @@ const ProdukTable = ({ originData }) => {
       dataIndex: "merk",
       key: "merk",
       editable: true,
+      filters: merkProdukFilters,
+      filterSearch: true,
+      onFilter: (value, record) => record.merk.includes(value),
     },
     {
       title: "Nama Produk",
@@ -41,6 +73,9 @@ const ProdukTable = ({ originData }) => {
       key: "name",
       editable: true,
       width: 450,
+      filters: namaProdukFilters,
+      filterSearch: true,
+      onFilter: (value, record) => record.name.startsWith(value),
     },
     {
       title: "Jenis Produk",
@@ -76,7 +111,9 @@ const ProdukTable = ({ originData }) => {
       editable: true,
       width: 400,
       render: (_, record) => {
-        return record.supplierId && record.supplierId.join(", ");
+        if (!record.supplierId) return null;
+        const formattedRecord = record.supplierId.map((id) => getSupplier(id));
+        return formattedRecord.join(", ");
       },
     },
     {

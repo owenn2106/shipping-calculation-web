@@ -33,8 +33,8 @@ const EditableCell = ({
       disabled: true,
     },
     ...jenisProduk.map((jenis) => ({
-      value: jenis,
-      label: jenis,
+      value: jenis.name,
+      label: jenis.name,
     })),
   ];
 
@@ -86,7 +86,12 @@ const EditableCell = ({
         options={supplierOptions}
       />
     ) : dataIndex === "volumeBerat" ? (
-      <InputNumber step="0.000001" stringMode precision={7} />
+      <InputNumber
+        step="0.000001"
+        stringMode
+        precision={6}
+        style={{ width: "100%" }}
+      />
     ) : (
       <Input />
     );
@@ -98,12 +103,6 @@ const EditableCell = ({
           style={{
             margin: 0,
           }}
-          // rules={[
-          //   {
-          //     required: true,
-          //     message: `Please Input ${title}!`,
-          //   },
-          // ]}
         >
           {inputNode}
         </Form.Item>
