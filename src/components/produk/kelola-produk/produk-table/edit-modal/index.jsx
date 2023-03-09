@@ -95,7 +95,7 @@ const EditModal = ({ isOpen, setOpen, editRecord, setEditRecord }) => {
         <p>Jenis Produk:</p>
         <Select
           style={{ width: "100%" }}
-          defaultValue={data?.jenis}
+          value={data?.jenis}
           options={jenisProdukOptions}
           onChange={(value) => setData({ ...data, jenis: value })}
         />
@@ -104,7 +104,7 @@ const EditModal = ({ isOpen, setOpen, editRecord, setEditRecord }) => {
         <p>Unit Satuan:</p>
         <Select
           style={{ width: "100%" }}
-          defaultValue={data?.unit}
+          value={data?.unit}
           options={unitsOptions}
           onChange={(value) => setData({ ...data, unit: value })}
         />
@@ -112,7 +112,7 @@ const EditModal = ({ isOpen, setOpen, editRecord, setEditRecord }) => {
       <div className="input__wrapper">
         <p>Kubikasi:</p>
         <Select
-          defaultValue={data?.kubikasi}
+          value={data?.kubikasi}
           style={{ width: "100%" }}
           options={[
             {
