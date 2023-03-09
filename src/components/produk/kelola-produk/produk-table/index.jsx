@@ -62,6 +62,7 @@ const ProdukTable = ({ originData }) => {
       title: "ID Produk",
       dataIndex: "id",
       key: "id",
+      width: 100,
       shouldCellUpdate: (record, prevRecord) => !_.isEqual(record, prevRecord),
     },
     {
@@ -188,7 +189,7 @@ const ProdukTable = ({ originData }) => {
         rowClassName="editable-row"
         rowKey="key"
         scroll={{
-          x: 3000,
+          x: 2000,
         }}
       />
     </>
