@@ -47,7 +47,7 @@ const EditModal = ({ isOpen, setOpen, editRecord, setEditRecord }) => {
 
   const supplierOptions = suppliers.map((supplier) => ({
     value: supplier.id,
-    label: supplier.name,
+    label: `${supplier.location} - ${supplier.name}`,
   }));
 
   useEffect(() => {
