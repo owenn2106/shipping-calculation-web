@@ -1,22 +1,53 @@
 import { useState, useCallback, useEffect } from "react";
-import { Table, Typography, Form } from "antd";
-import EditableCell from "./editable-cell";
+import { Typography, Table, Input } from "antd";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
-import actions from "redux/produk/actions";
 import supplierActions from "redux/supplier/actions";
+import _ from "lodash";
+import EditModal from "./edit-modal";
+import Fuse from "fuse.js";
 
 const ProdukTable = ({ originData }) => {
   const dispatch = useAppDispatch();
-  const [form] = Form.useForm();
-  const [data, setData] = useState(originData);
-  const [editingKey, setEditingKey] = useState("");
   const [suppliers] = useAppSelector((state) => [state.supplier.suppliers]);
+  const [data, setData] = useState(originData);
+  const [editRecord, setEditRecord] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     dispatch({
       type: supplierActions.GET_SUPPLIER,
     });
   }, [dispatch]);
+
+  useEffect(() => {
+    setData(originData);
+  }, [originData]);
+
+  useEffect(() => {
+    setSearchQuery(searchQuery);
+
+    // eslint-disable-next-line
+  }, [data]);
+
+  useEffect(() => {
+    const results = [...filterProduk()];
+    setData(results);
+
+    // eslint-disable-next-line
+  }, [searchQuery]);
+
+  const fuse = new Fuse(originData, {
+    keys: ["name", "merk"],
+    threshold: 0.4,
+    includeScore: true,
+  });
+
+  function filterProduk() {
+    return searchQuery === ""
+      ? originData
+      : fuse.search(searchQuery).map((i) => i.item);
+  }
 
   const getSupplier = useCallback(
     (supplierId) => {
@@ -26,46 +57,19 @@ const ProdukTable = ({ originData }) => {
     [suppliers]
   );
 
-  const merkProdukFilters = data
-    .map((datum) => {
-      return {
-        text: datum.merk,
-        value: datum.merk,
-      };
-    })
-    .filter(
-      (v, i, a) =>
-        a.findIndex((v2) => ["text", "value"].every((k) => v2[k] === v[k])) ===
-        i
-    );
-
-  const namaProdukFilters = data
-    .map((datum) => {
-      return {
-        text: datum.name,
-        value: datum.name,
-      };
-    })
-    .filter(
-      (v, i, a) =>
-        a.findIndex((v2) => ["text", "value"].every((k) => v2[k] === v[k])) ===
-        i
-    );
-
   const columns = [
     {
       title: "ID Produk",
       dataIndex: "id",
       key: "id",
+      shouldCellUpdate: (record, prevRecord) => !_.isEqual(record, prevRecord),
     },
     {
       title: "Merk Produk",
       dataIndex: "merk",
       key: "merk",
       editable: true,
-      filters: merkProdukFilters,
-      filterSearch: true,
-      onFilter: (value, record) => record.merk.includes(value),
+      shouldCellUpdate: (record, prevRecord) => !_.isEqual(record, prevRecord),
     },
     {
       title: "Nama Produk",
@@ -73,15 +77,14 @@ const ProdukTable = ({ originData }) => {
       key: "name",
       editable: true,
       width: 450,
-      filters: namaProdukFilters,
-      filterSearch: true,
-      onFilter: (value, record) => record.name.startsWith(value),
+      shouldCellUpdate: (record, prevRecord) => !_.isEqual(record, prevRecord),
     },
     {
       title: "Jenis Produk",
       dataIndex: "jenis",
       key: "jenis",
       editable: true,
+      shouldCellUpdate: (record, prevRecord) => !_.isEqual(record, prevRecord),
     },
     {
       title: "Unit Satuan",
@@ -89,6 +92,7 @@ const ProdukTable = ({ originData }) => {
       key: "unit",
       editable: true,
       width: 90,
+      shouldCellUpdate: (record, prevRecord) => !_.isEqual(record, prevRecord),
     },
     {
       title: "Kubikasi",
@@ -96,6 +100,7 @@ const ProdukTable = ({ originData }) => {
       key: "kubikasi",
       editable: true,
       width: 150,
+      shouldCellUpdate: (record, prevRecord) => !_.isEqual(record, prevRecord),
     },
     {
       title: "Berat / Volume",
@@ -103,6 +108,7 @@ const ProdukTable = ({ originData }) => {
       key: "volumeBerat",
       editable: true,
       width: 150,
+      shouldCellUpdate: (record, prevRecord) => !_.isEqual(record, prevRecord),
     },
     {
       title: "Supplier",
@@ -115,36 +121,28 @@ const ProdukTable = ({ originData }) => {
         const formattedRecord = record.supplierId.map((id) => getSupplier(id));
         return formattedRecord.join(", ");
       },
+      shouldCellUpdate: (record, prevRecord) => !_.isEqual(record, prevRecord),
     },
     {
       title: "Keterangan",
       dataIndex: "keterangan",
       key: "keterangan",
       editable: true,
+      shouldCellUpdate: (record, prevRecord) => !_.isEqual(record, prevRecord),
     },
     {
-      title: "",
+      title: "Actions",
       dataIndex: "operation",
       fixed: "right",
-      width: 70,
+      width: 100,
+      shouldCellUpdate: (record, prevRecord) => !_.isEqual(record, prevRecord),
       render: (_, record) => {
-        const editable = isEditing(record);
-        return editable ? (
-          <span>
-            <Typography.Link
-              onClick={() => save(record.key)}
-              style={{
-                marginRight: 8,
-              }}
-            >
-              Save
-            </Typography.Link>
-            <Typography.Link onClick={cancel}>Cancel</Typography.Link>
-          </span>
-        ) : (
+        return (
           <Typography.Link
-            disabled={editingKey !== ""}
-            onClick={() => edit(record)}
+            onClick={() => {
+              setEditRecord(record);
+              setModalOpen(true);
+            }}
           >
             Edit
           </Typography.Link>
@@ -152,58 +150,6 @@ const ProdukTable = ({ originData }) => {
       },
     },
   ];
-
-  function formatUndefined(obj) {
-    for (var i in obj) {
-      if (i === "supplierId" && obj[i] === undefined) {
-        obj[i] = [];
-      }
-      if (obj[i] === undefined) {
-        obj[i] = "";
-      }
-    }
-
-    return obj;
-  }
-
-  const isEditing = (record) => record.key === editingKey;
-  const edit = (record) => {
-    form.setFieldsValue({
-      code: "",
-      name: "",
-      ...record,
-    });
-    setEditingKey(record.key);
-  };
-  const cancel = () => {
-    setEditingKey("");
-  };
-  const save = async (key) => {
-    try {
-      const row = await form.validateFields();
-      const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
-      if (index > -1) {
-        const item = newData[index];
-        handleSaveChanges({
-          ...item,
-          ...formatUndefined(row),
-        });
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });
-        setData(newData);
-        setEditingKey("");
-      } else {
-        newData.push(row);
-        setData(newData);
-        setEditingKey("");
-      }
-    } catch (errInfo) {
-      console.log("Validate Failed:", errInfo);
-    }
-  };
 
   const mergedColumns = columns.map((col) => {
     if (!col.editable) {
@@ -213,44 +159,39 @@ const ProdukTable = ({ originData }) => {
       ...col,
       onCell: (record) => ({
         record,
-        inputType: "text",
         dataIndex: col.dataIndex,
         title: col.title,
-        editing: isEditing(record),
       }),
     };
   });
 
-  const handleSaveChanges = (newData) => {
-    dispatch({
-      type: actions.UPDATE_PRODUK,
-      payload: {
-        data: newData,
-      },
-    });
-  };
-
   return (
-    <Form form={form} component={false}>
+    <>
+      <EditModal
+        isOpen={isModalOpen}
+        setOpen={setModalOpen}
+        editRecord={editRecord}
+        setEditRecord={setEditRecord}
+      />
+      <div style={{ display: "flex", alignItems: "center", marginBottom: 10 }}>
+        <p style={{ margin: 0, paddingRight: 10 }}>Cari Produk:</p>
+        <Input
+          style={{ width: "50%" }}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.currentTarget.value)}
+        />
+      </div>
       <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
         bordered
         dataSource={data}
         columns={mergedColumns}
         rowClassName="editable-row"
-        pagination={{
-          onChange: cancel,
-        }}
         rowKey="key"
         scroll={{
-          x: 2000,
+          x: 3000,
         }}
       />
-    </Form>
+    </>
   );
 };
 
