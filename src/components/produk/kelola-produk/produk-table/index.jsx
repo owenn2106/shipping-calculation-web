@@ -21,21 +21,12 @@ const ProdukTable = ({ originData }) => {
   }, [dispatch]);
 
   useEffect(() => {
-    setData(originData);
-  }, [originData]);
-
-  useEffect(() => {
+    const results = [...filterProduk()];
+    setData(results);
     setSearchQuery(searchQuery);
 
     // eslint-disable-next-line
-  }, [data]);
-
-  useEffect(() => {
-    const results = [...filterProduk()];
-    setData(results);
-
-    // eslint-disable-next-line
-  }, [searchQuery]);
+  }, [originData, searchQuery]);
 
   const fuse = new Fuse(originData, {
     keys: ["name", "merk"],
