@@ -177,7 +177,6 @@ const ProdukTable = ({ originData }) => {
         bordered
         dataSource={data}
         columns={mergedColumns}
-        rowClassName="editable-row"
         rowKey="key"
         scroll={{
           x: 2000,

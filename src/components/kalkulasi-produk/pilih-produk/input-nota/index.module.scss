@@ -1,0 +1,16 @@
+.row {
+  display: flex;
+  align-items: flex-start;
+
+  & > * {
+    flex-basis: 100%;
+
+    padding: 0 1.5em;
+  }
+}
+
+.save__btn {
+  padding: 1.5em 1.5em 0;
+  display: flex;
+  justify-content: end;
+}
