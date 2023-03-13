@@ -1,0 +1,9 @@
+const actions = {
+  SET_STATE: "invoices/SET_STATE",
+  SUBSCRIBE_TO_INVOICES: "invoices/SUBSCRIBE_TO_INVOICES",
+  UNSUBSCRIBE_FROM_INVOICES: "invoices/UNSUBSCRIBE_FROM_INVOICES",
+  ADD_INVOICE: "invoices/ADD_INVOICE",
+  UPDATE_INVOICE: "invoices/UPDATE_INVOICE",
+};
+
+export default actions;

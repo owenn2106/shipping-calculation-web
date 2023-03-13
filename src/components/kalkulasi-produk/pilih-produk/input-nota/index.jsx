@@ -15,6 +15,7 @@ const InputNota = ({ selectedProduk }) => {
     tanggalNota: "",
     noInvoice: "",
     produk: [],
+    status: "unresolved",
   };
   const [nota, setNota] = useState(initialState);
 
@@ -34,6 +35,8 @@ const InputNota = ({ selectedProduk }) => {
     value: obj.id,
     label: `${obj.ekspedisi} | ${obj.kontainer} | ${obj.from} - ${obj.to}`,
   }));
+
+  const handleSaveNota = () => {};
 
   return (
     <div>
@@ -120,7 +123,11 @@ const InputNota = ({ selectedProduk }) => {
       </div>
 
       <div className={style.save__btn}>
-        <Button style={{ width: "100%" }} type="primary">
+        <Button
+          style={{ width: "100%" }}
+          type="primary"
+          onClick={handleSaveNota}
+        >
           Simpan Nota
         </Button>
       </div>
